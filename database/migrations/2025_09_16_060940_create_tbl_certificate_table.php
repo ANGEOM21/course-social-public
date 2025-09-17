@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('tbl_certificate', function (Blueprint $table) {
             $table->id('id_certificate');
-            $table->unsignedBigInteger('student_certificate'); // FK ke user
-            $table->string('title')->nullable();
-            $table->string('file')->nullable(); // path sertifikat PDF/IMG
+            $table->unsignedBigInteger('user_id');
+            $table->string('title');
+            $table->string('file_path'); // simpan nama file sertifikat
             $table->timestamps();
 
-            $table->foreign('student_certificate')
+            $table->foreign('user_id')
                   ->references('id_user')->on('tbl_user')
                   ->onDelete('cascade');
         });

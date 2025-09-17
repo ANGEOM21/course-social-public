@@ -24,7 +24,16 @@
                 <hr>
                 <p>{{ $course->description ?? 'Deskripsi kursus belum tersedia.' }}</p>
 
-                <a href="#" class="btn btn-success">🚀 Mulai Belajar</a>
+                {{-- ✅ Tombol Enrollment --}}
+                @if(Auth::check())
+                    <a href="{{ route('enroll', $course->id) }}" class="btn btn-success">
+                        🚀 Enroll & Mulai Belajar
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-warning">
+                        🔑 Login untuk Enroll
+                    </a>
+                @endif
             </div>
         </div>
     </div>

@@ -8,19 +8,27 @@ class Certificate extends Model
 {
     protected $table = 'tbl_certificate';
     protected $primaryKey = 'id_certificate';
-    public $timestamps = true;
 
-    protected $fillable = ['student_certificate', 'course_certificate', 'category_certificate'];
+    protected $fillable = [
+        'student_certificate',
+        'course_certificate',
+        'category_certificate',
+        'title',
+        'file_path',
+    ];
 
-    public function student() {
+    public function student()
+    {
         return $this->belongsTo(User::class, 'student_certificate', 'id_user');
     }
 
-    public function course() {
+    public function course()
+    {
         return $this->belongsTo(Course::class, 'course_certificate', 'id_course');
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'category_certificate', 'id_category');
     }
 }

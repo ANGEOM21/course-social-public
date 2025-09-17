@@ -11,7 +11,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('home') }}">Kursus Online</a>
+        <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">Kursus Online</a>
             <div class="ms-auto d-flex">
                 <a href="{{ route('courses.list') }}" class="btn btn-outline-light me-2">
                     <i class="bi bi-journal-bookmark"></i> Kursus
@@ -58,14 +58,21 @@
 
                         <!-- Foto Profil -->
                         <div class="text-center mb-4">
-                            <img src="{{ Auth::user()->img_user }}" 
-                                 alt="Foto Profil"
-                                 class="rounded-circle border border-3 border-primary"
-                                 width="140" height="140">
+                            @if(Auth::user()->img_user)
+                                <img src="{{ asset('storage/'.Auth::user()->img_user) }}" 
+                                     alt="Foto Profil"
+                                     class="rounded-circle border border-3 border-primary"
+                                     width="140" height="140">
+                            @else
+                                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name_user }}&background=0D8ABC&color=fff" 
+                                     alt="Foto Profil"
+                                     class="rounded-circle border border-3 border-primary"
+                                     width="140" height="140">
+                            @endif
                         </div>
 
                         <!-- Form Update Profil -->
-                        <form action="{{ route('profile.update') }}" method="POST">
+                        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -73,14 +80,14 @@
                                 <label for="name_user" class="form-label">Nama</label>
                                 <input type="text" id="name_user" name="name_user" 
                                        class="form-control" 
-                                       value="{{ Auth::user()->name_user }}" required>
+                                       value="{{ old('name_user', Auth::user()->name_user) }}" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="email_user" class="form-label">Email</label>
                                 <input type="email" id="email_user" name="email_user" 
                                        class="form-control" 
-                                       value="{{ Auth::user()->email_user }}" required readonly>
+                                       value="{{ Auth::user()->email_user }}" readonly>
                             </div>
 
                             <div class="mb-3">
@@ -89,13 +96,19 @@
                                        value="{{ ucfirst(Auth::user()->role_user) }}" readonly>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="img_user" class="form-label">Foto Profil Baru</label>
+                                <input type="file" name="img_user" id="img_user" class="form-control">
+                            </div>
+
                             <div class="text-center mt-4">
                                 <button type="submit" class="btn btn-success">
                                     <i class="bi bi-check-circle"></i> Simpan Perubahan
                                 </button>
-                                <a href="{{ route('home') }}" class="btn btn-outline-secondary">
-                                    <i class="bi bi-arrow-left"></i> Kembali
+                                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">
+                                   <i class="bi bi-arrow-left"></i> Kembali
                                 </a>
+
                             </div>
                         </form>
 

@@ -10,13 +10,18 @@ return new class extends Migration {
             $table->id('id_course');
             $table->string('name_course');
             $table->text('desc_course')->nullable();
-            $table->unsignedBigInteger('mentor_course'); // FK -> user
-            $table->unsignedBigInteger('category_course'); // FK -> category
-            $table->timestamps();
-
+        
+            // Relasi ke mentor (user)
+            $table->unsignedBigInteger('mentor_course');
             $table->foreign('mentor_course')->references('id_user')->on('tbl_user')->onDelete('cascade');
+        
+            // Relasi ke kategori
+            $table->unsignedBigInteger('category_course');
             $table->foreign('category_course')->references('id_category')->on('tbl_category')->onDelete('cascade');
+        
+            $table->timestamps();
         });
+        
     }
 
     public function down(): void {

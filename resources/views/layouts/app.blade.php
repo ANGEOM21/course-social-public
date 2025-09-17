@@ -11,13 +11,24 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ route('home') }}">Kursus Online</a>
-            <div class="ms-auto d-flex">
-                <a href="{{ route('courses.list') }}" class="btn btn-outline-light me-2">📚 Kursus</a>
-                <a href="{{ route('profile') }}" class="btn btn-outline-light me-2">👤 Profil</a>
-                <form action="{{ route('logout') }}" method="POST">
+            {{-- Brand ke dashboard sesuai role --}}
+            <a class="navbar-brand fw-bold" 
+               href="{{ Auth::user()->role_user === 'mentor' ? route('mentor.dashboard') : route('dashboard') }}">
+                Kursus Online
+            </a>
+
+            <div class="ms-auto d-flex align-items-center">
+                <a href="{{ route('courses.list') }}" class="btn btn-outline-light me-2">
+                    <i class="bi bi-book"></i> Kursus
+                </a>
+                <a href="{{ route('profile') }}" class="btn btn-outline-light me-2">
+                    <i class="bi bi-person-circle"></i> Profil
+                </a>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
-                    <button type="submit" class="btn btn-outline-light">Logout</button>
+                    <button type="submit" class="btn btn-outline-light">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
                 </form>
             </div>
         </div>

@@ -8,15 +8,21 @@ class Feedback extends Model
 {
     protected $table = 'tbl_feedback';
     protected $primaryKey = 'id_feedback';
-    public $timestamps = true;
 
-    protected $fillable = ['user_feedback', 'category_feedback', 'comment_feedback'];
+    protected $fillable = [
+        'user_feedback',
+        'course_feedback',
+        'rating_feedback',
+        'comment_feedback',
+    ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_feedback', 'id_user');
     }
 
-    public function category() {
-        return $this->belongsTo(Category::class, 'category_feedback', 'id_category');
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_feedback', 'id_course');
     }
 }

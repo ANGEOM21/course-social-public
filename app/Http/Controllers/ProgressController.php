@@ -2,38 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Progress;
 use Illuminate\Http\Request;
+use App\Models\Progress;
+use Illuminate\Support\Facades\Auth;
 
 class ProgressController extends Controller
 {
-    public function index()
+    // Tampilkan progress user untuk kursus tertentu
+    public function show($courseId)
     {
-        return response()->json(Progress::all());
+        $progress = Progress::where('user_id', Auth::id())
+                            ->where('course_id', $courseId)
+                            ->first();
+
+        return view('progress.show', compact('progress'));
     }
 
-    public function store(Request $request)
+    // Update progress user
+    public function update(Request $request, $courseId)
     {
-        $progress = Progress::create($request->all());
-        return response()->json($progress, 201);
-    }
+        $progress = Progress::firstOrCreate(
+            ['user_id' => Auth::id(), 'course_id' => $courseId],
+            ['total' => $request->total, 'completed' => 0]
+        );
 
-    public function show($id)
-    {
-        return response()->json(Progress::findOrFail($id));
-    }
+        $progress->completed = min($progress->completed + 1, $progress->total);
+        $progress->save();
 
-    public function update(Request $request, $id)
-    {
-        $progress = Progress::findOrFail($id);
-        $progress->update($request->all());
-
-        return response()->json($progress);
-    }
-
-    public function destroy($id)
-    {
-        Progress::destroy($id);
-        return response()->json(null, 204);
+        return back()->with('success', 'Progress berhasil diperbarui!');
     }
 }

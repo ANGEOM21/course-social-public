@@ -11,9 +11,9 @@ return new class extends Migration {
             $table->string('name_user');
             $table->string('email_user')->unique();
             $table->string('img_user')->nullable();
-            $table->string('role_user')->default('student');
-            $table->string('access_token_user')->nullable();
+            $table->enum('role_user', ['student', 'mentor', 'admin'])->default('student');
             $table->string('password')->nullable();
+            $table->string('access_token_user')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
