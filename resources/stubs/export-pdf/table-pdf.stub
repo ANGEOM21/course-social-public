@@ -1,0 +1,14 @@
+<table class="table table-zebra w-full">
+  <thead>
+    <tr>
+      <!-- isi header -->
+    </tr>
+  </thead>
+  <tbody>
+    @foreach ($data as $item)
+    <tr>
+      <!-- isi body -->
+    </tr>
+    @endforeach
+  </tbody>
+</table>

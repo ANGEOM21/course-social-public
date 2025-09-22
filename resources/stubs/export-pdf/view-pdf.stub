@@ -1,0 +1,45 @@
+@extends('export.index')
+@section('content')
+<style>
+    th {
+        background-color: #f8b92c;
+        color: white;
+    }
+    .title {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 20px;
+        width: 100%;
+        justify-content: center;
+    }
+    .title img {
+        width: 150px;
+        height: 150px;
+    }
+    .title h1 {
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+<div class="container">
+    <div class="title">
+        @php
+            $logo = 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('assets/img/logo_desa.png')));
+        @endphp
+        <div style="text-align: center; margin-bottom: 10px;">
+            <img src="{{ $logo }}" alt="Logo" style="width: 120px; height: auto;">
+        </div>
+
+        <h1>{{ $title }}</h1>
+    </div>
+
+    @include('export.{slug}.table', ['data' => $data])
+</div>
+<footer class='footer'>
+    <p style='text-align: center; margin-bottom: 5px'>
+        Copyright &copy; {{ config('app.name') }} {{ date('Y') }}
+    </p>
+</footer>
+@endsection

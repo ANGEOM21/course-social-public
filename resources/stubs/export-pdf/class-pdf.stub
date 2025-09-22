@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Exports;
+
+use App\Helper\ExcelExport;
+use App\Helper\PdfExport;
+
+class {className}
+{
+    public $data;
+    public $fileName;
+    public $title;
+
+    public function __construct($data, $fileName, $title = null)
+    {
+        $this->data = $data;
+        $this->fileName = $fileName;
+        $this->title = $title;
+    }
+
+    public function excel()
+    {
+        $excel = new ExcelExport(
+            $this->data,
+            $this->fileName,
+            'export.{slug}.table'
+        );
+
+        return $excel->export();
+    }
+
+    public function pdf()
+    {
+        $pdf = new PdfExport(
+            $this->data,
+            $this->fileName,
+            'export.{slug}.pdf.content',
+            $this->title
+        );
+
+        return $pdf->export();
+    }
+}

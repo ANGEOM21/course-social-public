@@ -24,17 +24,28 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $webFiles = [];
+        foreach (glob(__DIR__ . '/../../routes/*.php') as $file) {
+            $name = basename($file);
+            if (in_array($name, ['api.php', 'console.php'])) {
+                continue;
+            }
+            $webFiles[] = $file;
+        }
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        $this->routes(function () {
+        $this->routes(function () use ($webFiles) {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            foreach ($webFiles as $file) {
+                Route::middleware('web')
+                    ->group($file);
+            }
         });
     }
 }
