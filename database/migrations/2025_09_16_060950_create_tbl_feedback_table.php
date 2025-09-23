@@ -6,17 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void {
-        Schema::create('tbl_feedback', function (Blueprint $table) {
+        Schema::create('tbl_feedbacks', function (Blueprint $table) {
             $table->id('id_feedback');
-            $table->unsignedBigInteger('user_feedback');   // FK -> user
-            $table->unsignedBigInteger('course_feedback'); // FK -> course
-            $table->tinyInteger('rating_feedback')->default(0);
-            $table->text('desc_feedback')->nullable();
+            $table->foreignId('student_id')
+                  ->constrained('tbl_students', 'id_student')
+                  ->cascadeOnDelete();
+            $table->foreignId('course_id')
+                  ->constrained('tbl_courses', 'id_course')
+                  ->cascadeOnDelete();
+            $table->tinyInteger('rating')->default(0);
+            $table->text('description')->nullable();
             $table->timestamps();
-
-            $table->foreign('user_feedback')->references('id_user')->on('tbl_user')->onDelete('cascade');
-            $table->foreign('course_feedback')->references('id_course')->on('tbl_course')->onDelete('cascade');
         });
+        
     }
 
     public function down(): void {

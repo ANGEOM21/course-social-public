@@ -16,16 +16,11 @@ class RoleMiddleware
      * @param  string  $role
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!Auth::check()) {
-            return redirect('/'); // belum login
+        if (!auth('admins')->user()->role || !in_array(auth('admins')->user()->role, $roles)) {
+            abort(403, 'UNAUTHORIZED ACTION.');
         }
-
-        if (Auth::user()->role_user !== $role) {
-            return redirect()->route('home')->with('error', 'Akses ditolak.');
-        }
-
         return $next($request);
     }
 }

@@ -5,7 +5,7 @@ use Livewire\Volt\Volt;
 
 $routes = [
     'guest' => [
-        'middleware' => ['guest:admin'],
+        'middleware' => ['guest:admins'],
         'uris' => [
             // Login
             [
@@ -16,7 +16,7 @@ $routes = [
         ],
     ],
     'auth' => [
-        'middleware' => ['auth.admin', 'role:admin,superadmin'],
+        'middleware' => ['auth.admins', 'role:admin,mentor'],
         'uris' => [
             // Dashboard
             [

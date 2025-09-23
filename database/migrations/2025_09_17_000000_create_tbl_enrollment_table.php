@@ -5,19 +5,24 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up(): void {
-        Schema::create('tbl_enrollment', function (Blueprint $table) {
+    public function up(): void
+    {
+        Schema::create('tbl_enrollments', function (Blueprint $table) {
             $table->id('id_enrollment');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('course_id');
+            $table->foreignId('student_id')
+                ->constrained('tbl_students', 'id_student')
+                ->cascadeOnDelete();
+            $table->foreignId('course_id')
+                ->constrained('tbl_courses', 'id_course')
+                ->cascadeOnDelete();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id_user')->on('tbl_user')->onDelete('cascade');
-            $table->foreign('course_id')->references('id_course')->on('tbl_course')->onDelete('cascade');
+            $table->unique(['student_id', 'course_id']);
         });
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('tbl_enrollment');
     }
 };

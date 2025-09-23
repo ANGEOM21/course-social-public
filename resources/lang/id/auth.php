@@ -16,4 +16,7 @@ return [
     'throttle' => 'Terlalu banyak usaha masuk. Silahkan coba lagi dalam :seconds detik.',
     'password' => 'Password salah atau tidak cocok.',
     'deactivated' => 'Akun Anda telah dinonaktifkan, silahkan hubungi admin.',
+    'banned' => 'Akun Anda telah diblokir, silahkan hubungi admin.',
+    'email' => 'Alamat email tidak cocok.',
+    'email_or_username' => 'Alamat email atau username tidak cocok.',
 ];

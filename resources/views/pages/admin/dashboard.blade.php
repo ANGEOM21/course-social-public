@@ -3,7 +3,6 @@
 use Livewire\Volt\Component;
 
 new class extends Component {
-
     public function with()
     {
         return [

@@ -1,15 +1,15 @@
 <x-layouts.base>
   
   @php
-    //$auth_check_admin = auth('admin')->check() && request()->routeIs('admin.*');
-    //$login_page_admin = request()->routeIs('admin.login');
+    $auth_check_admin = auth('admins')->check() && request()->routeIs('admin.*');
+    $login_page_admin = request()->routeIs('admin.login');
     $landing_page = request()->routeIs('landing.*');
   @endphp
-  {{-- @if ($auth_check_admin)
+  @if ($auth_check_admin)
     @include('partials.admin-app')
   @elseif ($login_page_admin)
-    @include('partials.auth-admin-app') --}}
-  @if ($landing_page)
+    @include('partials.auth-admin-app')
+  @elseif ($landing_page)
     <div class="bg-red">
       {{ $slot }}
     </div>

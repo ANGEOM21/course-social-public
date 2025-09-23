@@ -5,26 +5,29 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up(): void {
-        Schema::create('tbl_course', function (Blueprint $table) {
+    public function up(): void
+    {
+        Schema::create('tbl_courses', function (Blueprint $table) {
             $table->id('id_course');
             $table->string('name_course');
             $table->text('desc_course')->nullable();
-        
-            // Relasi ke mentor (user)
-            $table->unsignedBigInteger('mentor_course');
-            $table->foreign('mentor_course')->references('id_user')->on('tbl_user')->onDelete('cascade');
-        
-            // Relasi ke kategori
-            $table->unsignedBigInteger('category_course');
-            $table->foreign('category_course')->references('id_category')->on('tbl_category')->onDelete('cascade');
-        
+
+            // relasi ke mentor/admin
+            $table->foreignId('mentor_id')
+                ->constrained('tbl_admins', 'id_admin')
+                ->cascadeOnDelete();
+
+            // relasi ke kategori
+            $table->foreignId('category_id')
+                ->constrained('tbl_categories', 'id_category')
+                ->cascadeOnDelete();
+
             $table->timestamps();
         });
-        
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('tbl_course');
     }
 };

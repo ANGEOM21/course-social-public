@@ -5,15 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up(): void {
-        Schema::create('tbl_category', function (Blueprint $table) {
+    public function up(): void
+    {
+        Schema::create('tbl_categories', function (Blueprint $table) {
             $table->id('id_category');
             $table->string('name_category');
+            $table->string('img_category')->nullable();
             $table->timestamps();
         });
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('tbl_category');
     }
 };

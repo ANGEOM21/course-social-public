@@ -8,17 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('tbl_certificate', function (Blueprint $table) {
+        Schema::create('tbl_certificates', function (Blueprint $table) {
             $table->id('id_certificate');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('student_id')
+                  ->constrained('tbl_students', 'id_student')
+                  ->cascadeOnDelete();
             $table->string('title');
-            $table->string('file_path'); // simpan nama file sertifikat
+            $table->string('file_path');
             $table->timestamps();
-
-            $table->foreign('user_id')
-                  ->references('id_user')->on('tbl_user')
-                  ->onDelete('cascade');
         });
+        
     }
 
     public function down(): void

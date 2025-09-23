@@ -46,7 +46,7 @@
               </a>
             </li>
             <li>
-              <a href="{{ route('google.login', ['role' => 'mentor']) }}"
+              <a href="{{ route('admin.login') }}"
                 class="hover:scale-105 transition-transform duration-300">
                 🧑‍🏫 Mentor
               </a>

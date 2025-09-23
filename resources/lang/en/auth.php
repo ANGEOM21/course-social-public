@@ -17,5 +17,8 @@ return [
     'password' => 'The provided password is incorrect.',
     'deactivated' => 'Your account has been deactivated, please contact the admin.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'banned' => 'Your account has been banned, please contact the admin.',
+    'email' => 'The provided email is incorrect.',
+    'email_or_username' => 'The provided email or username is incorrect.',
 
 ];
