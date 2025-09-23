@@ -13,8 +13,8 @@ new class extends Component {
 
     public function mount()
     {
-        $this->name = Auth::guard('admin')->user()->full_name;
-        $this->avatar = Auth::guard('admin')->user()->img_admin;
+        $this->name = Auth::guard('admins')->user()->name_admin;
+        $this->avatar = Auth::guard('admins')->user()->img_admin;
     }
 
     public function rules()
@@ -38,7 +38,7 @@ new class extends Component {
     {
         $this->validate();
 
-        $user = Auth::guard('admin')->user();
+        $user = Auth::guard('admins')->user();
         // Cek upload avatar
         if ($this->avatarFile instanceof TemporaryUploadedFile) {
             // Hapus avatar lama

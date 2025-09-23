@@ -18,8 +18,8 @@ new class extends Component
      */
     public function mount(): void
     {
-        $this->name = Auth::guard('admin')->user()->full_name;
-        $this->username = Auth::guard('admin')->user()->username;
+        $this->name = Auth::guard('admins')->user()->name_admin;
+        $this->username = Auth::guard('admins')->user()->email_admin;
     }
 
     /**
@@ -27,7 +27,7 @@ new class extends Component
      */
     public function updateProfileInformation(): void
     {
-        $user = Auth::guard('admin')->user();
+        $user = Auth::guard('admins')->user();
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],

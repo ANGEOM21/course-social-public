@@ -30,7 +30,7 @@ new class extends Component
             throw $e;
         }
 
-        Auth::guard('admin')->user()->update([
+        Auth::guard('admins')->user()->update([
             'password' => Hash::make($validated['password']),
         ]);
 

@@ -15,7 +15,7 @@
       <div class="mt-3 sm:mt-0">
         <h1
           class="cursor-default text-3xl font-extrabold uppercase leading-tight bg-base-content sm:bg-base-100 shadow-[0_0_0_10px] bg-clip-text text-transparent drop-shadow select-none pointer-events-none">
-          {{ Auth::guard('admin')->user()->full_name }}</h1>
+          {{ Auth::guard('admins')->user()->name_admin }}</h1>
         <p class="text-md text-base-content font-semibold mt-2">{{ 'Perbarui informasi akun anda' }}</p>
       </div>
     </div>
