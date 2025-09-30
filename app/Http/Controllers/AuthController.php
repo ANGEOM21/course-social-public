@@ -71,7 +71,7 @@ class AuthController extends Controller
                 );
             }
 
-            return redirect()->route('student.dashboard')->with('success', 'Selamat datang, ' . $user->name_student);
+            return redirect()->route('student.dashboard')->success( 'Selamat datang, ' . $user->name_student);
         } catch (\Throwable $e) {
             Log::error('[Google OAuth] ' . $e->getMessage());
             if (session('oauth_via_popup')) {
@@ -87,7 +87,7 @@ class AuthController extends Controller
                     ['Content-Type' => 'text/html']
                 );
             }
-            return redirect()->route('landing.index')->with('error', 'Login gagal, coba lagi.');
+            return redirect()->route('landing.index')->error( 'Login gagal, coba lagi.');
         }
     }
 

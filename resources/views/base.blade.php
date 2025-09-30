@@ -49,7 +49,7 @@
 
   <style>
     #nprogress .bar {
-      background: var(--fallback-p, oklch(var(--p)/1)) !important;
+      background: #3b82f6 !important;
       height: 4px !important;
     }
 

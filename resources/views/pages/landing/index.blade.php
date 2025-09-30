@@ -28,6 +28,23 @@
             </a>
           </li>
         @endforeach
+        @auth
+          <li>
+            <a href="{{ route('student.dashboard') }}"
+              class="text-base-content hover:text-primary transition-all duration-300 transform hover:scale-105">
+              Dashboard
+            </a>
+          </li>
+        @endauth
+        @guest
+          <li>
+            <a href="#contact"
+              class="text-base-content hover:text-primary transition-all duration-300 transform hover:scale-105">
+              Contact
+            </a>
+          </li>
+          
+        @endguest
       </ul>
     </div>
 

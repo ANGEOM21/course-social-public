@@ -3,7 +3,7 @@
   $menunList = collect($menuItem->menuList())['dashboard_student'];
 @endphp
 <div>
-  <title>Dashboard {{ $app_name }}</title>
+  <title>{{ isset($title) ? $title : 'Dashboard' }} {{ $app_name }}</title>
   <div>
     <nav
       class="navbar bg-base-100/80 backdrop-blur-sm shadow-lg px-4 sm:px-8 sticky top-0 z-50 transition-all duration-300"

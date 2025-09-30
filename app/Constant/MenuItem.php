@@ -24,6 +24,12 @@ class MenuItem
                 'icon' => 'fa-duotone fa-solid fa-house',
                 'text' => 'Dashboard',
             ],
+            [
+                'route' => 'admin.categories',
+                'segment' => 'admin/categories',
+                'icon' => 'fa fa-list',
+                'text' => 'Categories',
+            ],
             // [
             // GRUP / COLLAPSE PEMILIHAN
             // 'text' => 'Pemilihan',
@@ -54,10 +60,6 @@ class MenuItem
                 "comunity" => [
                     "text" => "Komunitas",
                     "section" => "#community",
-                ],
-                "contact" => [
-                    "text" => "Kontak",
-                    "section" => "#contact",
                 ],
 
             ],
