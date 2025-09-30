@@ -2,10 +2,14 @@
   <title>Profile - {{ config('app.name', 'Laravel') }}</title>
 
   <!-- BANNER -->
-  <div class="relative w-full h-60 rounded-t-badge overflow-hidden">
-    <img src="{{ asset('banner.png') }}" alt="Banner" class="w-full h-full object-cover "
-      style="filter: blur(5px);" />
-  </div>
+  @if (File::exists(public_path('banner.png')))
+    <div class="relative w-full h-60 rounded-t-badge overflow-hidden">
+      <img src="{{ asset('banner.png') }}" alt="Banner" class="w-full h-full object-cover" style="filter: blur(5px);" />
+    </div>
+  @else
+    <div class="relative w-full h-60 rounded-t-lg overflow-hidden bg-gradient-to-br from-primary to-secondary">
+    </div>
+  @endif
 
   <!-- AVATAR + NAMA -->
   <div class="relative mt-[-4rem] flex items-center flex-col sm:flex-row sm:items-end sm:justify-between px-4">

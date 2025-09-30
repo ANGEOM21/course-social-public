@@ -8,7 +8,7 @@
 
   <!-- Favicons -->
   <link rel="manifest" href="{{ asset('favicon/manifest.json') }}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/assets/img/logo.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('logo.png') }}">
 
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
@@ -39,13 +39,17 @@
 
   {{-- TomJs --}}
   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
 
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <style>
     #nprogress .bar {
-      background: var(--fallback-p,oklch(var(--p)/1)) !important;
+      background: var(--fallback-p, oklch(var(--p)/1)) !important;
       height: 4px !important;
     }
 
@@ -57,10 +61,23 @@
   @livewireStyles()
   @stack('styles')
 
+  @guest
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  @endguest
+
+  @if (isset($titlePage))
+    <title>{{ $titlePage }} - {{ $app_name }}</title>
+  @endif
 </head>
 
 <body>
   {{ $slot }}
+  @guest
+    <div id="g_id_onload" data-auto_select="true"
+      data-client_id="{{ config('services.laravel-google-one-tap.client_id') }}"
+      data-login_uri="{{ config('services.laravel-google-one-tap.redirect') }}" data-use_fedcm_for_prompt="true"
+      data-_token="{{ csrf_token() }}"></div>
+  @endguest
   {{-- Date picker --}}
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   {{-- LeaftJs --}}
@@ -95,8 +112,10 @@
 
   <x-toaster-hub />
   @livewireScripts
-  @stack('scripts')
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  @stack('scripts')
 </body>
 
 </html>

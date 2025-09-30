@@ -1,6 +1,6 @@
-<div class="navbar p-0 w-full sticky top-0 z-50 lg:hidden">
-  <div class="flex-1 px-4 justify-between bg-base-content py-2">
-    <div class="flex-none">
+<div class="navbar p-0 w-full sticky top-0 z-50 lg:hidden bg-base-content">
+  <div class="flex w-full px-4 items-center justify-between  py-2">
+    <div class="flex-1">
       <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-circle btn-base-100 btn-sm">
         <i class="fa fa-bars"></i>
       </label>
@@ -12,12 +12,11 @@
       <div tabindex="0" role="button" class="normal-case avatar btn btn-ghost btn-circle ">
         <div class="w-10 rounded-full flex">
           <div class="bg-base-300 h-10 w-10 flex items-center justify-center">
-            {{-- <i class="fa-solid fa-user text-xl text-slate-500"></i> --}}
-            <img src="{{ 
-                  auth('admins')->user()->img_admin
+            <img
+              src="{{ auth('admins')->user()->img_admin
                   ? asset('storage/' . auth('admins')->user()->img_admin)
-                  : 'https://ui-avatars.com/api/?name=' . urlencode(auth('admins')->user()->name_admin) 
-                  }}" alt="User Avatar" class="w-10 h-10 rounded-full" />
+                  : 'https://ui-avatars.com/api/?name=' . urlencode(auth('admins')->user()->name_admin) }}"
+              alt="User Avatar" class="w-10 h-10 rounded-full" />
           </div>
         </div>
       </div>

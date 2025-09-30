@@ -7,7 +7,10 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use LaravelSocialite\GoogleOneTap\LaravelGoogleOneTapServiceProvider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,26 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-        //     $message = new MailMessage();
-        //     return $message->subject('Verify Email Address')->view('mail.verify-email', [
-        //         'url' => $url,
-        //         'subject' => 'Verify Email Address',
-        //         'name' => $notifiable?->name ?? 'User',
-        //     ]);
-        // });
-
-        // // Customize Paswword Reset ui
-        // ResetPassword::toMailUsing(function (User $notifiable, string $token) {
-        //     $name_user = $notifiable->full_name ?? $notifiable->username ?? 'User';
-        //     $url = URL::temporarySignedRoute('auth.password.reset', now()->addMinutes(60), ['token' => $token]);
-        //     $message = new MailMessage();
-        //     return $message->subject('Reset Password')->view('mail.password-reset', [
-        //         'url' => $url,
-        //         'subject' => 'Reset Password',
-        //         'name' => $name_user,
-        //     ]);
-        // });
+        Event::listen(function (SocialiteWasCalled  $event) {
+            $event->extendSocialite('laravel-google-one-tap', LaravelGoogleOneTapServiceProvider::class);
+        });
 
         Blade::anonymousComponentPath(resource_path('views/livewire/components'), 'components');
 

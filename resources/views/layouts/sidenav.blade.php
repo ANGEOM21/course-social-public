@@ -8,9 +8,15 @@
         <div class="mb-4 text-base-100">
           <div class="flex justify-start items-center gap-1 select-none pointer-events-none"
             oncontextmenu="return false;">
-            <div class="w-[40px] p-1">
-              <img src="{{ $logo }}" class="w-[50px] select-none pointer-events-none" alt="logo"
-                draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <div class="w-[40px] p-1 bg-base-100 rounded-full flex items-center justify-center">
+              {{-- Logo --}}
+              @if (isset($logo))
+                <img src="{{ $logo }}" class="w-[50px] select-none pointer-events-none" alt="logo"
+                  draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+              @else
+                <span class="text-2xl">🎓</span>
+              @endif
+
             </div>
             <h1
               class="cursor-default text-lg font-extrabold uppercase leading-tight bg-base-100 bg-clip-text text-transparent drop-shadow select-none pointer-events-none"
@@ -25,7 +31,7 @@
       <!-- Scrollable Menu Items -->
       <div id="sidebar-scroll" x-ref="box" class="flex-1 overflow-y-auto p-3 pt-0">
         @php
-          
+
           $menu = new App\Constant\MenuItem();
           $menuItems = collect($menu->getMenuItemAdmin())->filter(function ($item) {
               if (!isset($item['role'])) {

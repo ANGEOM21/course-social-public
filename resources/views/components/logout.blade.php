@@ -1,6 +1,6 @@
 <?php
 
-use App\Geomlive\Utils\Actions\Logout;
+use App\Http\Controllers\Auth\Student\Utils\Logout;
 use Livewire\Volt\Component;
 
 new class extends Component {
@@ -11,7 +11,7 @@ new class extends Component {
     {
         $logout();
 
-        $this->redirect('/', navigate: true);
+        redirect()->route('landing.index');
     }
 }; ?>
 
