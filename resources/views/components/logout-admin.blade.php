@@ -1,17 +1,19 @@
 <?php
 
-use App\Geomlive\Utils\Actions\LogoutUmkm;
+use App\Http\Controllers\Auth\Admin\Utils\Logout;
 use Livewire\Volt\Component;
+use Masmerise\Toaster\Toastable;
 
 new class extends Component {
+  use Toastable;
     /**
      * Log the current user out of the application.
      */
-    public function logout(LogoutUmkm $logout): void
+    public function logout(Logout $logout): void
     {
         $logout();
 
-        $this->redirect('/', navigate: true);
+        redirect()->route('admin.login')->success('You have been logged out successfully.');
     }
 }; ?>
 

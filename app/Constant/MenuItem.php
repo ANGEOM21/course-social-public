@@ -30,6 +30,12 @@ class MenuItem
                 'icon' => 'fa fa-list',
                 'text' => 'Categories',
             ],
+            [
+                'route' => 'admin.courses.index',
+                'segment' => 'admin/courses',
+                'icon' => 'fa fa-graduation-cap',
+                'text' => 'Courses',
+            ],
             // [
             // GRUP / COLLAPSE PEMILIHAN
             // 'text' => 'Pemilihan',
@@ -37,6 +43,13 @@ class MenuItem
             // 'segment' => 'admin/pemilihan',
             // 'children' => [],
             // ],
+
+            [
+                'route' => 'admin.settings.index',
+                'segment' => 'admin/settings',
+                'icon' => 'fa fa-cog',
+                'text' => 'Settings',
+            ],
         ];
     }
 

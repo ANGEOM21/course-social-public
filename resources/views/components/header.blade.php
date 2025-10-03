@@ -13,7 +13,7 @@
       ->first(fn ($v, $k) => str($k)->startsWith('progress-indicator')) : $progressIndicator;
 @endphp
 
-<div id="{{ $anchor }}" {{ $attributes->class(['mb-10', 'mary-header-anchor' => $withAnchor]) }}>
+<div id="{{ $anchor }}" {{ $attributes->class(['mb-1', 'mary-header-anchor' => $withAnchor]) }}>
   <div class="flex flex-wrap gap-5 justify-between items-center">
     <div>
       <div class="{{ $size }} font-extrabold">

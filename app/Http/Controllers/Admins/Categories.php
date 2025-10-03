@@ -30,8 +30,6 @@ class Categories extends Component
     public $categoryId;
     public $isEdit = false;
     public $existing_img_category;
-
-    // 1. Tambahkan properti ini untuk mengontrol modal
     public bool $categoryModal = false;
 
     public function updatingSearch()

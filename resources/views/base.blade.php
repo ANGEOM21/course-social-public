@@ -46,6 +46,8 @@
 
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+  <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 
   <style>
     #nprogress .bar {
@@ -58,6 +60,30 @@
       z-index: 1;
     }
   </style>
+  <style>
+    .trix-button-group--file-tools {
+      display: none !important;
+    }
+
+    trix-editor {
+      min-height: 12rem;
+      /* Atur tinggi minimal editor */
+      --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+      border-radius: var(--rounded-btn, 0.5rem);
+      border-width: 1px;
+      border-color: oklch(var(--b3, var(--b2)) / 1);
+      background-color: oklch(var(--b1));
+    }
+
+    trix-editor:focus-within {
+      outline: 2px solid oklch(var(--p));
+      outline-offset: 2px;
+      border-color: oklch(var(--p));
+    }
+  </style>
+
   @livewireStyles()
   @stack('styles')
 

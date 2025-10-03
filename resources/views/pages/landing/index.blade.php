@@ -200,11 +200,13 @@
         <p class="text-xl mb-8 opacity-90 scroll-reveal" data-delay="200">
           Kami menyediakan kelas & jasa UI/UX design, Web Development, dan Freelancer untuk pemula.
         </p>
-        <a href="{{ route('google.login', ['role' => 'student']) }}"
+        @guest
+          <a href="{{ route('google.login', ['role' => 'student']) }}"
           class="btn btn-primary btn-lg rounded-full px-8 animate-bounce hover:scale-105 transition-transform duration-300 scroll-reveal"
           data-delay="400">
           Mulai Sebagai Student
         </a>
+        @endguest
       </div>
     </div>
   </section>

@@ -1,0 +1,20 @@
+<?php
+
+namespace {namespace_classes};
+
+use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Masmerise\Toaster\Toastable;
+
+class {clases} extends Component
+{
+    use WithPagination, WithFileUploads, Toastable;
+
+    public function render()
+    {
+        return view('{view_page}', [
+            'title' => '{clases}',
+        ]);
+    }
+}

@@ -3,24 +3,17 @@
 use Livewire\Volt\Component;
 
 new class extends Component {
-    public function with()
-    {
-        return [
-            'breadcrumbs' => [
-                [
-                    'text' => 'Home',
-                    'url' => 'admin.dashboard',
-                    'icon' => 'fa fa-home',
-                ],
-            ],
-        ];
-    }
+    //
 };
 ?>
 
 
 <div>
   <title>Dashboard {{ $app_name }}</title>
-  <h1 class="text-2xl font-bold">Dashboard</h1>
-  <x-breadcumbs :items="$breadcrumbs" />
+  <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+    <h1 class="text-2xl font-bold text-gray-800">
+      <i class="fa fa-home mr-2"></i>
+      Dashboard
+    </h1>
+  </div>
 </div>

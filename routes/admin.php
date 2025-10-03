@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admins\Categories;
+use App\Http\Controllers\Admins\CourseDetail;
+use App\Http\Controllers\Admins\Courses;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -26,15 +28,30 @@ $routes = [
                 'component' => 'pages.admin.dashboard',
             ],
             [
-                'route' => '/categories',
-                'name' => 'categories',
-                'class' => Categories::class,
+                'route' => 'settings',
+                'name' => 'settings.index',
+                'component' => 'pages.admin.settings.index',
             ],
             // Profile
             [
                 'route' => 'profile',
                 'name' => 'profile',
                 'component' => 'pages.admin.profile',
+            ],
+            [
+                'route' => '/categories',
+                'name' => 'categories',
+                'class' => Categories::class,
+            ],
+            [
+                'route' => '/courses',
+                'name' => 'courses.index',
+                'class' => Courses::class,
+            ],
+            [
+                'route' => '/courses/detail/{id}',
+                'name' => 'courses.detail',
+                'class' => CourseDetail::class,
             ],
         ],
     ],

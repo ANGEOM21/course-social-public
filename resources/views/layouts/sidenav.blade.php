@@ -117,7 +117,7 @@
             </div>
             <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-32 p-2 mt-2 shadow">
               <li>
-                <livewire:components.logout />
+                <livewire:components.logout-admin />
               </li>
               <li>
                 <a wire:navigate href="{{ route('admin.profile') }}" class="flex items-center gap-2 text-base-content">
