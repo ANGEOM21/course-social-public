@@ -15,12 +15,8 @@ new class extends Component {
     {
         $this->validate();
         $this->form->authenticate();
-
+        auth('admins')->user()->update(['last_login_at' => now('Asia/Jakarta')]);
         Session::regenerate();
-
-        auth('admins')->user()->last_login_at = now();
-        auth('admins')->user()->save();
-
         $this->redirectIntended(default: route('admin.dashboard', absolute: false), navigate: true);
     }
 

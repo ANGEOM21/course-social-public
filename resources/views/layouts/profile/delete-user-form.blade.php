@@ -1,6 +1,6 @@
 <?php
 
-use App\Geomlive\Utils\Actions\Logout;
+use App\Http\Controllers\Auth\Admin\Utils\Logout;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 

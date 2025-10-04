@@ -48,7 +48,8 @@ class TblAdmin extends Authenticatable
 		'password_admin',
 		'access_token_admin',
 		'role',
-		'remember_token'
+		'remember_token',
+		'last_login_at',
 	];
 
 	public function getAuthPassword()

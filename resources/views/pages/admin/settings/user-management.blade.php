@@ -295,7 +295,7 @@ new class extends Component {
                   <td class="text-center">
                     @if ($user->last_login_at)
                       <span class="text-sm">
-                        {{ \Carbon\Carbon::parse($user->last_activity)->diffForHumans() }}
+                        {{ \Carbon\Carbon::parse($user->last_login_at)->diffForHumans(['parts' => 2]) }}
                       </span>
                     @else
                       <span class="text-sm italic text-gray-400">Belum Pernah</span>
