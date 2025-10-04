@@ -43,7 +43,7 @@
               Contact
             </a>
           </li>
-          
+
         @endguest
       </ul>
     </div>
@@ -74,9 +74,9 @@
               <div class="bg-base-300 h-10 w-10 flex items-center justify-center">
                 <img
                   src="{{ auth('web')->user()->img_student
-                      ? auth('web')->user()->img_student
+                      ? auth('web')->user()->img_student . "?sz=50"
                       : 'https://ui-avatars.com/api/?name=' . urlencode(auth('web')->user()->name_student) }}"
-                  alt="User Avatar" class="w-10 h-10 rounded-full" />
+                  alt="User Avatar" class="w-10 h-10 rounded-full" loading="lazy" />
               </div>
             </div>
           </div>
@@ -202,10 +202,10 @@
         </p>
         @guest
           <a href="{{ route('google.login', ['role' => 'student']) }}"
-          class="btn btn-primary btn-lg rounded-full px-8 animate-bounce hover:scale-105 transition-transform duration-300 scroll-reveal"
-          data-delay="400">
-          Mulai Sebagai Student
-        </a>
+            class="btn btn-primary btn-lg rounded-full px-8 animate-bounce hover:scale-105 transition-transform duration-300 scroll-reveal"
+            data-delay="400">
+            Mulai Sebagai Student
+          </a>
         @endguest
       </div>
     </div>

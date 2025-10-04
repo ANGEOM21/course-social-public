@@ -277,7 +277,7 @@ new class extends Component {
                       <div class="avatar {{ $user->online_status }}">
                         <div class="mask mask-squircle w-12 h-12">
                           <img
-                            src="{{ $user->profile_picture_url ? asset('storage/' . $user->img_admin) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name_admin).'&background=random' }}"
+                            src="{{ $user->img_admin ? asset('storage/' . $user->img_admin) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name_admin).'&background=random' }}"
                             alt="Avatar" />
                         </div>
                       </div>
@@ -293,7 +293,7 @@ new class extends Component {
                       class="px-2 py-1 rounded-badge text-sm text-base-100 rounded {{ $badge[$user->role] }}">{{ ucfirst($user->role) }}</span>
                   </td>
                   <td class="text-center">
-                    @if ($user->last_activity)
+                    @if ($user->last_login_at)
                       <span class="text-sm">
                         {{ \Carbon\Carbon::parse($user->last_activity)->diffForHumans() }}
                       </span>
@@ -305,14 +305,14 @@ new class extends Component {
 
                   <td class="text-center">
                     <div class="flex justify-center gap-2">
-                    @if ($user->role != 'superadmin')
+                    @if ($user->role != 'admin')
                       <button class="btn btn-xs btn-warning" wire:click="edit({{ $user->id_admin }})" title="Edit User">
                         <i class="fa fa-edit"></i>
                       </button>
                     @endif
                       <button class="btn btn-xs btn-secondary" wire:click="resetPwd({{ $user->id_admin }})"
                         title="Reset Password"><i class="fa fa-key"></i></button>
-                    @if ($user->role != 'superadmin')
+                    @if ($user->role != 'admin')
                       <button class="btn btn-xs btn-error" 
                       wire:confirm.prompt="Anda yakin ingin menghapus user {{ $user->full_name }}?.\nJika iya, ketik 'KONFIRMASI' untuk konfirmasi.|KONFIRMASI"
                       wire:click="delete({{ $user->id_admin }})" title="Hapus User">

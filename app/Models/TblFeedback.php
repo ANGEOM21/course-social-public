@@ -43,6 +43,7 @@ class TblFeedback extends Model
 		'description'
 	];
 
+
 	public function tbl_course()
 	{
 		return $this->belongsTo(TblCourse::class, 'course_id');

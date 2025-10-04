@@ -4,6 +4,13 @@ use Livewire\Volt\Component;
 new class extends Component {
     public $activeTab = 'users';
 
+    public function mount()
+    {
+        if (auth('admins')->user()->role !== 'admin') {
+            $this->activeTab = 'students';
+        }
+    }
+
     public function switchTab($tab)
     {
         $this->activeTab = $tab;
@@ -26,15 +33,17 @@ new class extends Component {
   {{-- Tabs Lifted --}}
   <div role="tablist" class="tabs tabs-lift tabs-md md:tabs-lg">
     {{-- Tab 1 --}}
-    <a role="tab" @class([
-        'tab md:text-sm text-xs flex gap-3 items-center m-0',
-        'tab-active' => $activeTab === 'users',
-    ]) wire:click="switchTab('users')">
-      <i class="fa fa-users"></i>
-      <span class="hidden md:inline">
-        Manajemen Pengguna
-      </span>
-    </a>
+    @if (auth('admins')->user()->role === 'admin')
+      <a role="tab" @class([
+          'tab md:text-sm text-xs flex gap-3 items-center m-0',
+          'tab-active' => $activeTab === 'users',
+      ]) wire:click="switchTab('users')">
+        <i class="fa fa-users-cog"></i>
+        <span class="hidden md:inline">
+          Manajemen User
+        </span>
+      </a>
+    @endif
     <a role="tab" @class([
         'tab md:text-sm text-xs flex gap-3 items-center m-0',
         'tab-active' => $activeTab === 'students',

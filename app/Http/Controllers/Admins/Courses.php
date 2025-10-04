@@ -84,8 +84,9 @@ class Courses extends Component
         $this->resetForm();
     }
 
-    public function edit(TblCourse $course)
+    public function edit($course_id)
     {
+        $course = TblCourse::findOrFail($course_id);
         $this->resetForm();
         $this->isEdit = true;
         $this->editingCourse = $course;
@@ -116,8 +117,9 @@ class Courses extends Component
         }
     }
 
-    public function delete(TblCourse $course)
+    public function delete($course_id)
     {
+        $course = TblCourse::findOrFail($course_id);
         $course->delete();
         $this->success('Kursus berhasil dihapus!');
     }

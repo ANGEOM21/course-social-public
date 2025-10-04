@@ -31,14 +31,14 @@ new class extends Component {
     {
         $this->editingStudent = $student;
         $this->editingFullName = $student->name_student; // Menggunakan 'name_student'
-        $this->editingEmail = $student->email_student;   // Menggunakan 'email_student'
+        $this->editingEmail = $student->email_student; // Menggunakan 'email_student'
         $this->newProfilePicture = null;
         $this->reset('editingPassword', 'editingPassword_confirmation');
         $this->resetErrorBag();
         $this->showEditModal = true; // Lebih baik menggunakan true/false langsung
     }
 
-    public function updateStudent() 
+    public function updateStudent()
     {
         $validated = $this->validate([
             'editingFullName' => ['required', 'string', 'max:255'],
@@ -55,7 +55,7 @@ new class extends Component {
             $filePath = $this->newProfilePicture->store('profile-pictures/students', 'public');
         }
 
-        // Update data 
+        // Update data
         $this->editingStudent->update([
             'name_student' => $validated['editingFullName'],
             'email_student' => $validated['editingEmail'],
@@ -70,7 +70,7 @@ new class extends Component {
         $this->showEditModal = false;
     }
 
-    public function resetPwd(TblStudent $student) 
+    public function resetPwd(TblStudent $student)
     {
         $this->resetingStudent = $student;
         $this->reset('resetPassword', 'resetPassword_confirmation');
@@ -90,8 +90,9 @@ new class extends Component {
         $this->showResetPasswordModal = false;
     }
 
-    public function delete(TblStudent $student) // Nama parameter disesuaikan
+    public function delete(TblStudent $student)
     {
+        // Nama parameter disesuaikan
         // Hapus profil jika ada
         if ($student->img_student) {
             Storage::disk('public')->delete($student->img_student);
@@ -129,11 +130,13 @@ new class extends Component {
                       <div class="avatar">
                         <div class="mask mask-squircle w-12 h-12">
                           @php
-                            $imageUrl = $student->img_student ?? 'https://ui-avatars.com/api/?name=' . urlencode($student->name_student) . '&background=random';
+                            $imageUrl = $student->img_student
+                                ? "$student->img_student?sz=50"
+                                : 'https://ui-avatars.com/api/?name=' .
+                                    urlencode($student->name_student) .
+                                    '&background=random';
                           @endphp
-                          <img
-                            src="{{ $imageUrl }}"
-                            alt="Avatar" />
+                          <img src="{{ $imageUrl }}" alt="Avatar" locading="lazy" />
                         </div>
                       </div>
                       <div>
@@ -147,10 +150,12 @@ new class extends Component {
                   </td>
                   <td class="text-center">
                     <div class="flex justify-center gap-2">
-                      <button class="btn btn-xs btn-info text-white" wire:click="edit({{ $student->id_student }})" title="Edit Siswa">
+                      <button class="btn btn-xs btn-info text-white" wire:click="edit({{ $student->id_student }})"
+                        title="Edit Siswa">
                         <i class="fa fa-edit"></i>
                       </button>
-                      <button class="btn btn-xs btn-secondary" wire:click="resetPwd({{ $student->id_student }})" title="Reset Password">
+                      <button class="btn btn-xs btn-secondary" wire:click="resetPwd({{ $student->id_student }})"
+                        title="Reset Password">
                         <i class="fa fa-key"></i>
                       </button>
                       <button class="btn btn-xs btn-error"
@@ -169,7 +174,7 @@ new class extends Component {
             </tbody>
           </table>
         </div>
-        <div class="mt-4">{{ $students->links("pagination::daisyui") }}</div>
+        <div class="mt-4">{{ $students->links('pagination::daisyui') }}</div>
       </div>
     </div>
   </div>
@@ -186,42 +191,54 @@ new class extends Component {
             @elseif ($editingStudent?->img_student)
               <img src="{{ $student->img_student }}" class="w-full h-full object-cover">
             @else
-              <img src="https://ui-avatars.com/api/?name={{ urlencode($editingFullName) }}" class="w-full h-full object-cover">
+              <img src="https://ui-avatars.com/api/?name={{ urlencode($editingFullName) }}"
+                class="w-full h-full object-cover">
             @endif
           </div>
-          <label for="newProfilePicture" class="w-10 h-10 flex items-center justify-center absolute bottom-0 right-0 bg-white rounded-full border shadow p-1 cursor-pointer hover:bg-gray-100 transition">
+          <label for="newProfilePicture"
+            class="w-10 h-10 flex items-center justify-center absolute bottom-0 right-0 bg-white rounded-full border shadow p-1 cursor-pointer hover:bg-gray-100 transition">
             <i class="fa fa-camera text-sm"></i>
           </label>
           <input wire:model="newProfilePicture" type="file" id="newProfilePicture" accept="image/*" class="hidden">
         </div>
-        @error('newProfilePicture') <span class="text-sm text-error mt-1 block">{{ $message }}</span> @enderror
+        @error('newProfilePicture')
+          <span class="text-sm text-error mt-1 block">{{ $message }}</span>
+        @enderror
       </div>
-      
+
       {{-- INPUT NAMA LENGKAP --}}
       <div class="form-control w-full">
-          <label class="label"><span class="label-text">Nama Lengkap</span></label>
-          <input type="text" class="input input-bordered w-full" wire:model="editingFullName" />
-          @error('editingFullName') <span class="text-error text-xs mt-1">{{ $message }}</span> @enderror
+        <label class="label"><span class="label-text">Nama Lengkap</span></label>
+        <input type="text" class="input input-bordered w-full" wire:model="editingFullName" />
+        @error('editingFullName')
+          <span class="text-error text-xs mt-1">{{ $message }}</span>
+        @enderror
       </div>
-      
+
       {{-- INPUT EMAIL --}}
       <div class="form-control w-full">
-          <label class="label"><span class="label-text">Email</span></label>
-          <input type="email" class="input input-bordered w-full" wire:model="editingEmail" />
-          @error('editingEmail') <span class="text-error text-xs mt-1">{{ $message }}</span> @enderror
+        <label class="label"><span class="label-text">Email</span></label>
+        <input type="email" class="input input-bordered w-full" wire:model="editingEmail" />
+        @error('editingEmail')
+          <span class="text-error text-xs mt-1">{{ $message }}</span>
+        @enderror
       </div>
-      
+
       {{-- INPUT PASSWORD BARU --}}
       <div class="form-control w-full">
-          <label class="label"><span class="label-text">Password Baru (Opsional)</span></label>
-          <input type="password" placeholder="Isi untuk mengubah" class="input input-bordered w-full" wire:model="editingPassword" />
-          @error('editingPassword') <span class="text-error text-xs mt-1">{{ $message }}</span> @enderror
+        <label class="label"><span class="label-text">Password Baru (Opsional)</span></label>
+        <input type="password" placeholder="Isi untuk mengubah" class="input input-bordered w-full"
+          wire:model="editingPassword" />
+        @error('editingPassword')
+          <span class="text-error text-xs mt-1">{{ $message }}</span>
+        @enderror
       </div>
-      
+
       {{-- INPUT KONFIRMASI PASSWORD --}}
       <div class="form-control w-full">
-          <label class="label"><span class="label-text">Konfirmasi Password Baru</span></label>
-          <input type="password" placeholder="Ulangi password baru" class="input input-bordered w-full" wire:model="editingPassword_confirmation" />
+        <label class="label"><span class="label-text">Konfirmasi Password Baru</span></label>
+        <input type="password" placeholder="Ulangi password baru" class="input input-bordered w-full"
+          wire:model="editingPassword_confirmation" />
       </div>
 
       <x-slot:actions>
@@ -236,20 +253,24 @@ new class extends Component {
     subtitle="Reset password untuk siswa {{ $resetingStudent?->email_student }}" :separator="true" boxClass="max-w-md"
     wire:model="showResetPasswordModal">
     <form wire:submit="doResetPassword" class="space-y-4">
-      
+
       {{-- INPUT PASSWORD BARU --}}
       <div class="form-control w-full">
-          <label class="label"><span class="label-text">Password Baru</span></label>
-          <input type="password" placeholder="Minimal 6 karakter" class="input input-bordered w-full" wire:model="resetPassword" />
-          @error('resetPassword') <span class="text-error text-xs mt-1">{{ $message }}</span> @enderror
+        <label class="label"><span class="label-text">Password Baru</span></label>
+        <input type="password" placeholder="Minimal 6 karakter" class="input input-bordered w-full"
+          wire:model="resetPassword" />
+        @error('resetPassword')
+          <span class="text-error text-xs mt-1">{{ $message }}</span>
+        @enderror
       </div>
-      
+
       {{-- INPUT KONFIRMASI PASSWORD BARU --}}
       <div class="form-control w-full">
-          <label class="label"><span class="label-text">Konfirmasi Password Baru</span></label>
-          <input type="password" placeholder="Ulangi password baru" class="input input-bordered w-full" wire:model="resetPassword_confirmation" />
+        <label class="label"><span class="label-text">Konfirmasi Password Baru</span></label>
+        <input type="password" placeholder="Ulangi password baru" class="input input-bordered w-full"
+          wire:model="resetPassword_confirmation" />
       </div>
-      
+
       <x-slot:actions>
         <button type="button" class="btn" @click="$wire.set('showResetPasswordModal', false)">Batal</button>
         <button type="submit" class="btn btn-primary">Reset Password</button>

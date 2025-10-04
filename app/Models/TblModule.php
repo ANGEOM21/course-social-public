@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Class TblModule
@@ -39,6 +40,27 @@ class TblModule extends Model
 		'description',
 		'video_url'
 	];
+
+	protected static function booted()
+	{
+		static::saving(function ($m) {
+			if (!$m->slug || $m->isDirty('title')) {
+				$base = Str::slug($m->title);
+				$slug = $base;
+				$i = 2;
+				while (static::where('slug', $slug)->where('id_module', '!=', $m->id_course)->exists()) {
+					$slug = "{$base}-{$i}";
+					$i++;
+				}
+				$m->slug = $slug;
+			}
+		});
+	}
+
+	public function getRouteKeyName()
+	{
+		return 'slug';
+	}
 
 	public function tbl_course()
 	{

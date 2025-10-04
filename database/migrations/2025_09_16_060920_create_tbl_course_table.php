@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('tbl_courses', function (Blueprint $table) {
             $table->id('id_course');
             $table->string('name_course');
+            $table->string('slug')->unique();
             $table->text('desc_course')->nullable();
 
             // relasi ke mentor/admin

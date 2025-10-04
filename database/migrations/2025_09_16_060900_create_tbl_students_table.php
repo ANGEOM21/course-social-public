@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('email_student')->unique();
             $table->string('img_student')->nullable();
             $table->string('password_student')->nullable();
-            $table->string('access_token_student')->nullable();
+            $table->text('access_token_student')->nullable();
             $table->string('refresh_token_student')->nullable();
             $table->timestamp('token_expires_at')->nullable();
             $table->rememberToken();

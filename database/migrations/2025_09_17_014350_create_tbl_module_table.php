@@ -13,6 +13,7 @@ return new class extends Migration {
                 ->constrained('tbl_courses', 'id_course')
                 ->cascadeOnDelete();
             $table->string('title');
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->string('video_url');
             $table->timestamps();

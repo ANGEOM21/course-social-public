@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admins\Categories;
 use App\Http\Controllers\Admins\CourseDetail;
+use App\Http\Controllers\Admins\CourseDetailVidio;
 use App\Http\Controllers\Admins\Courses;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -49,9 +50,14 @@ $routes = [
                 'class' => Courses::class,
             ],
             [
-                'route' => '/courses/detail/{id}',
+                'route' => '/courses/detail/{slug_course:slug}',
                 'name' => 'courses.detail',
                 'class' => CourseDetail::class,
+            ],
+            [
+                'route' => '/courses/detail/{slug_course:slug}/{slug_module:slug}',
+                'name' => 'courses.detail.vidio',
+                'class' => CourseDetailVidio::class,
             ],
         ],
     ],
@@ -71,7 +77,8 @@ Route::prefix('admin')
                                 if (isset($url['methods'])) {
                                     Route::match($url['methods'], $url['route'], $url['class'])->name($url['name']);
                                 } else {
-                                    Route::get($url['route'], $url['class'])->name($url['name']);
+                                    $r = Route::get($url['route'], $url['class'])->name($url['name']);
+                                    if (!empty($url['scoped'])) $r->scopeBindings();
                                 }
                             } else {
                                 Volt::route($url['route'], $url['component'])->name($url['name']);
@@ -83,7 +90,8 @@ Route::prefix('admin')
                             if (isset($url['methods'])) {
                                 Route::match($url['methods'], $url['route'], $url['class'])->name($url['name']);
                             } else {
-                                Route::get($url['route'], $url['class'])->name($url['name']);
+                                $r = Route::get($url['route'], $url['class'])->name($url['name']);
+                                if (!empty($url['scoped'])) $r->scopeBindings();
                             }
                         } else {
                             Volt::route($url['route'], $url['component'])->name($url['name']);

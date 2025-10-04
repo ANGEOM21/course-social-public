@@ -1,4 +1,5 @@
 <div>
+  <title> {{ isset($title) ? $title : 'Manajemen Kursus' }} - {{ $app_name }}</title>
   <div
     class="p-4 sm:p-6 bg-base-100 rounded-xl shadow-sm border border-base-300 min-h-[calc(100vh-40px)] flex flex-col justify-between gap-10">
 
@@ -66,7 +67,9 @@
                     @endif
                   </p>
                   <div class="card-actions justify-end mt-4 pt-3 border-t border-base-200">
-                    <a href="{{ route('admin.courses.detail', base64_encode($course->id_course)) }}"
+                    <a href="{{ route('admin.courses.detail', [
+                      'slug_course' => $course->slug
+                    ]) }}"
                       class="btn btn-xs btn-outline btn-ghost">
                       <i class="fa-solid fa-eye"></i>
                       Detail

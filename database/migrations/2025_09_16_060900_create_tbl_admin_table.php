@@ -12,8 +12,9 @@ return new class extends Migration {
             $table->string('email_admin')->unique();
             $table->string('img_admin')->nullable();
             $table->string('password_admin')->nullable();
-            $table->string('access_token_admin')->nullable();
+            $table->text('access_token_admin')->nullable();
             $table->enum('role', ['admin', 'mentor'])->default('mentor'); 
+            $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

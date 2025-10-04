@@ -15,24 +15,26 @@ class CourseDetail extends Component
     public TblCourse $course;
     public $modules;
 
-    // Properti untuk Modal Modul (disesuaikan dengan model)
+    // Properti untuk Modal Modul
     public bool $moduleModal = false;
     public bool $isEditModule = false;
     public ?TblModule $editingModule = null;
 
     #[Rule('required|string|max:255')]
-    public string $title = ''; // Sebelumnya: name_module
+    public string $title = '';
 
     #[Rule('nullable|string')]
     public string $description = '';
 
-    #[Rule('required|url')] // Validasi untuk memastikan ini adalah URL yang valid
+    // Validasi URL YouTube
+    #[Rule('required', message: 'URL video wajib diisi.')]
+    #[Rule('url', message: 'Format URL tidak valid.')]
+    #[Rule('regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/', message: 'URL harus berupa link YouTube yang valid.')]
     public string $video_url = '';
 
-    public function mount($id)
+    public function mount(TblCourse $slug_course)
     {
-        $idCourse = (int) base64_decode($id);
-        $this->course = TblCourse::with(['tbl_category', 'tbl_admin'])->findOrFail($idCourse);
+        $this->course = $slug_course->load(['tbl_category', 'tbl_admin']);
         $this->loadModules();
     }
 
@@ -48,20 +50,18 @@ class CourseDetail extends Component
         ]);
     }
 
-    // --- FUNGSI UNTUK MANAJEMEN MODUL (DIPERBARUI) ---
-
     public function createModule()
     {
         $this->resetForm();
         $this->isEditModule = false;
         $this->moduleModal = true;
-        $this->dispatch('trix-update-module', value: ''); // Kosongkan Trix
+        $this->dispatch('trix-update-module', value: '');
     }
-    
+
     public function storeModule()
     {
+        // Slug tidak perlu dibuat di sini, model akan menanganinya secara otomatis
         $validated = $this->validate();
-        
         $this->course->tbl_modules()->create($validated);
 
         $this->success('Modul baru berhasil ditambahkan!');
@@ -70,23 +70,22 @@ class CourseDetail extends Component
         $this->loadModules();
     }
 
-    public function editModule(TblModule $module)
+    public function editModule($module_id)
     {
+        $module = TblModule::findOrFail($module_id);
         $this->resetForm();
         $this->isEditModule = true;
         $this->editingModule = $module;
-        
-        // Isi form dengan data yang ada
         $this->title = $module->title;
         $this->description = $module->description;
         $this->video_url = $module->video_url;
-        
         $this->moduleModal = true;
-        $this->dispatch('trix-update-module', value: $module->description); // Isi Trix
+        $this->dispatch('trix-update-module', value: $module->description);
     }
 
     public function updateModule()
     {
+        // Slug tidak perlu diupdate di sini
         $validated = $this->validate();
         $this->editingModule->update($validated);
 
@@ -95,7 +94,7 @@ class CourseDetail extends Component
         $this->resetForm();
         $this->loadModules();
     }
-    
+
     public function saveModule()
     {
         if ($this->isEditModule) {
@@ -105,8 +104,9 @@ class CourseDetail extends Component
         }
     }
 
-    public function deleteModule(TblModule $module)
+    public function deleteModule($module_id)
     {
+        $module = TblModule::findOrFail($module_id);
         $module->delete();
         $this->success('Modul berhasil dihapus!');
         $this->loadModules();

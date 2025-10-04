@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Class TblCourse
@@ -46,6 +47,27 @@ class TblCourse extends Model
 		'mentor_id',
 		'category_id'
 	];
+
+	protected static function booted()
+	{
+		static::saving(function ($m) {
+			if (!$m->slug || $m->isDirty('name_course')) {
+				$base = Str::slug($m->name_course);
+				$slug = $base;
+				$i = 2;
+				while (static::where('slug', $slug)->where('id_course', '!=', $m->id_course)->exists()) {
+					$slug = "{$base}-{$i}";
+					$i++;
+				}
+				$m->slug = $slug;
+			}
+		});
+	}
+
+	public function getRouteKeyName()
+	{
+		return 'slug';
+	}
 
 	public function tbl_category()
 	{

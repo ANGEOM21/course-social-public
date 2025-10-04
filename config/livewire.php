@@ -31,7 +31,7 @@ return [
 
     'navigate' => [
         'show_progress_bar' => true,
-        'progress_bar_color' => '#F59E0B',
+        'progress_bar_color' => '#bc43ae',
     ],
 
     'inject_morph_markers' => true,
