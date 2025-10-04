@@ -133,7 +133,6 @@ new class extends Component {
               <div class="flex items-center gap-3">
                 <div class="avatar">
                   <div class="w-10 rounded-lg bg-base-200 flex items-center justify-center text-center">
-                    {{-- [PERBAIKAN] Logika fallback ke ikon jika gambar tidak ada --}}
                     @if ($course->tbl_category?->img_category && Storage::disk('public')->exists($course->tbl_category->img_category))
                       <img src="{{ Storage::url($course->tbl_category->img_category) }}" />
                     @else
@@ -170,8 +169,11 @@ new class extends Component {
                           : 'https://ui-avatars.com/api/?name=' .
                               urlencode($student->name_student) .
                               '&background=random';
+                      $fallback = 'https://ui-avatars.com/api/?name=' . $student->name_student;
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="Avatar" locading="lazy" />
+                    <img src="{{ $imageUrl }}" alt="User Avatar" class="w-10 h-10 rounded-full" loading="lazy"
+                      referrerpolicy="no-referrer" decoding="async"
+                      onerror="this.onerror=null;this.src='{{ $fallback }}';" />
                   </div>
                 </div>
                 <div>

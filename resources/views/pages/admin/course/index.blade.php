@@ -144,8 +144,6 @@
                 this.$refs.trix.addEventListener('trix-change', () => {
                     this.value = this.$refs.trix.value;
                 });
-        
-                // Tonton perubahan dari Livewire dan update Trix (penting untuk mode edit)
                 this.$watch('value', (newValue) => {
                     if (newValue !== this.$refs.trix.value) {
                         this.$refs.trix.editor.loadHTML(newValue || '');

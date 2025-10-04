@@ -136,7 +136,7 @@ new class extends Component {
                                     urlencode($student->name_student) .
                                     '&background=random';
                           @endphp
-                          <img src="{{ $imageUrl }}" alt="Avatar" locading="lazy" />
+                          <img src="{{ $imageUrl }}" alt="Avatar" locading="lazy" referrerpolicy="no-referrer" decoding="async" />
                         </div>
                       </div>
                       <div>

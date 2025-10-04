@@ -15,7 +15,7 @@
       <div>
         <div class="card bg-base-100 shadow-lg border border-base-300">
           <div class="card-body">
-            <div class="flex lg:flex-row lg:items-center lg:justify-between gap-6 flex-col-reverse">
+            <div class="flex lg:flex-row lg:items-center lg:justify-between justify-center gap-6 flex-col-reverse">
               <div>
                 <div class="flex flex-wrap items-center gap-4 mb-4">
                   <div class="flex items-center gap-2">
@@ -65,7 +65,7 @@
                   </div>
                 </div>
               </div>
-              <figure class="aspect-video bg-base-200 shadow-lg rounded-lg w-48 h-48 flex-shrink-0 group">
+              <figure class="aspect-video bg-base-200 shadow-lg rounded-lg md:w-48 md:h-48 flex-shrink-0 group">
                 @if ($course->tbl_category->img_category)
                   <img src="{{ Storage::url($course->tbl_category->img_category) }}" alt="{{ $course->tbl_category->name_category }}"
                     class="w-full h-full group-hover:scale-105 transition-transform duration-300" />
@@ -124,15 +124,17 @@
                     </div>
                   </div>
                   <div class="flex gap-2" onclick="event.stopPropagation();">
-                    <button wire:click="editModule({{ $module->id_module }})" class="btn btn-xs btn-ghost btn-circle"
+                    <div class="join join-horizontal">
+                    <button wire:click="editModule({{ $module->id_module }})" class="btn btn-xs btn-soft btn-warning join-item"
                       title="Edit">
                       <i class="fa fa-pencil"></i>
                     </button>
                     <button wire:click="deleteModule({{ $module->id_module }})"
                       wire:confirm="Anda yakin ingin menghapus modul ini?"
-                      class="btn btn-xs btn-ghost btn-circle text-error" title="Hapus">
+                      class="btn btn-xs btn-soft btn-error join-item" title="Hapus">
                       <i class="fa fa-trash"></i>
                     </button>
+                    </div>
                   </div>
 
                 </div>
@@ -176,19 +178,22 @@
       {{-- DESKRIPSI MODUL (DENGAN TRIX) --}}
       <div class="form-control w-full">
         <label class="label"><span class="label-text font-medium">Deskripsi Modul (Opsional)</span></label>
-        <div wire:ignore x-data x-init="const trixEditor = $refs.trix;
-        trixEditor.addEventListener('trix-change', (event) => {
-            $wire.set('description', event.target.value);
-        });
-        $el.closest('.modal').addEventListener('trix-update-module', (event) => {
-            const newValue = event.detail.value;
-            if (trixEditor.editor.html !== newValue) {
-                trixEditor.editor.loadHTML(newValue || '');
+                <div wire:ignore x-data="{
+            value: @entangle('description'),
+            init() {
+                this.$refs.trix.editor.loadHTML(this.value || '');
+                this.$refs.trix.addEventListener('trix-change', () => {
+                    this.value = this.$refs.trix.value;
+                });
+                this.$watch('value', (newValue) => {
+                    if (newValue !== this.$refs.trix.value) {
+                        this.$refs.trix.editor.loadHTML(newValue || '');
+                    }
+                });
             }
-        });">
-          <input id="module_description_editor" type="hidden">
-          <trix-editor x-ref="trix" input="module_description_editor"
-            class="trix-content bg-base-100"></trix-editor>
+        }">
+          <input id="description_editor" type="hidden">
+          <trix-editor x-ref="trix" input="description_editor" class="trix-content bg-base-100"></trix-editor>
         </div>
         @error('description')
           <span class="text-error text-xs mt-1">{{ $message }}</span>

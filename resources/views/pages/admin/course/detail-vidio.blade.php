@@ -3,11 +3,14 @@
   {{-- Breadcrumbs --}}
   <div class="breadcrumbs text-sm mb-2">
     <ul>
-      <li><a wire:navigate href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-      <li><a wire:navigate href="{{ route('admin.courses.index') }}">Kursus</a></li>
-      <li><a wire:navigate href="{{ route('admin.courses.detail', $course->slug) }}"
-          class="truncate max-w-xs">{{ $course->name_course }}</a></li>
-      <li class="truncate max-w-xs">{{ $activeModule->title }}</li>
+      <li><a wire:navigate href="{{ route('admin.courses.index') }}">Manajemen Kursus</a></li>
+      <li><a wire:navigate href="{{ route('admin.courses.detail', $course->slug) }}">
+          {{ $course->name_course }}
+        </a>
+      </li>
+      <li>
+        {{ $activeModule->title }}
+      </li>
     </ul>
   </div>
 

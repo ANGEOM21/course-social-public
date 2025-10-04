@@ -7,8 +7,8 @@
 					<div class="w-12 h-12 p-1 bg-base-100 rounded-full">
 						<img src="{{ asset('logo.png') }}" class="w-full h-full object-cover" alt="">
 					</div>
-					<span class="text-3xl font-bold">
-						Study Club Programming
+					<span class="text-3xl font-bold capitalize">
+						{{ $app_name }}
 					</span>
 				</div>
 				<p class="mt-2 opacity-80 max-w-xs">

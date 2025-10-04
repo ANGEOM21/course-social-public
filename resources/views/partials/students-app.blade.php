@@ -11,8 +11,8 @@
       <div class="navbar-start">
         <a href="{{ route('landing.index') }}" class="flex item-center text-xl p-0 hover:bg-transparent">
           <img src="{{ asset('logo.png') }}" alt="Logo SCP" class="h-8 w-8 mr-2" />
-          <span class="font-bold bg-clip-text">
-            SCP
+          <span class="font-bold bg-clip-text capitalize">
+            {{ $app_name }}
           </span>
         </a>
       </div>
@@ -49,11 +49,19 @@
             <div tabindex="0" role="button" class="normal-case avatar btn btn-ghost btn-circle ">
               <div class="w-10 rounded-full flex">
                 <div class="bg-base-300 h-10 w-10 flex items-center justify-center">
-                  <img
-                    src="{{ auth('web')->user()->img_student
-                        ? auth('web')->user()->img_student
-                        : 'https://ui-avatars.com/api/?name=' . urlencode(auth('web')->user()->name_student) }}"
-                    alt="User Avatar" class="w-10 h-10 rounded-full" />
+                  @php
+                    $imageUrl =
+                        auth('web')->user()->img_student ??
+                        'https://ui-avatars.com/api/?name=' . urlencode(auth('web')->user()->name_student) . '?sz=50';
+                    $fallback = 'https://ui-avatars.com/api/?name=' . urlencode(auth('web')->user()->name_student);
+                  @endphp
+                  <img 
+                  src="{{ $imageUrl }}" 
+                  alt="User Avatar"
+                  class="w-10 h-10 rounded-full"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  decoding="async" onerror="this.onerror=null;this.src='{{ $fallback }}';" />
                 </div>
               </div>
             </div>
