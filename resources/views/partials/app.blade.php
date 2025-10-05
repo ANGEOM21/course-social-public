@@ -13,9 +13,7 @@
   @elseif ($auth_check_students)
     @include('partials.students-app')
   @elseif ($landing_page)
-    <div>
-      {{ $slot }}
-    </div>
+    @include('partials.landing-app')
   @else
     <div class="min-h-screen bg-gray-100">
       <div class="container mx-auto px-4 py-8">

@@ -26,6 +26,7 @@ use Illuminate\Notifications\Notifiable;
  * @property Carbon|null $updated_at
  * 
  * @property Collection|TblCertificate[] $tbl_certificates
+ * @property Collection|TblCourse[] $enrolledCourses
  * @property Collection|TblEnrollment[] $tbl_enrollments
  * @property Collection|TblFeedback[] $tbl_feedbacks
  * @property Collection|TblProgress[] $tbl_progresses
@@ -58,7 +59,11 @@ class TblStudent extends Authenticatable
 		return $this->password_student;
 	}
 
-	
+	public function tbl_courses()
+	{
+		return $this->belongsToMany(TblCourse::class, 'tbl_enrollments', 'student_id', 'course_id');
+	}
+
 	public function tbl_certificates()
 	{
 		return $this->hasMany(TblCertificate::class, 'student_id');

@@ -86,13 +86,12 @@ class MenuItem
                     "route_name" => "student.dashboard",
                 ],
                 "courses" => [
-                    "text" => "Courses",
+                    "text" => "My Courses",
                     "route_name" => "student.courses",
                 ],
                 "catalog" => [
                     "text" => "Catalog",
-                    "route_name" => null, // atau hapus kalau belum ada
-                    "href" => "#catalog",
+                    "route_name" => 'student.catalog',
                 ],
                 "certificate" => [
                     "text" => "Certificate",

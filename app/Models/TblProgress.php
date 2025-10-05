@@ -35,7 +35,8 @@ class TblProgress extends Model
 
 	protected $fillable = [
 		'course_id',
-		'student_id'
+		'student_id',
+		'module_id'
 	];
 
 	public function tbl_course()
@@ -47,4 +48,9 @@ class TblProgress extends Model
 	{
 		return $this->belongsTo(TblStudent::class, 'student_id');
 	}
+
+	public function tbl_module()
+{
+    return $this->belongsTo(TblModule::class, 'module_id');
+}
 }

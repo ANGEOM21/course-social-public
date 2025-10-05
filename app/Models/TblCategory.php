@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * Class TblCategory
@@ -37,4 +38,10 @@ class TblCategory extends Model
 	{
 		return $this->hasMany(TblCourse::class, 'category_id');
 	}
+
+		// Accessor untuk mendapatkan slug dari name_category
+		public function getSlugAttribute()
+		{
+				return Str::slug($this->name_category);
+		}
 }

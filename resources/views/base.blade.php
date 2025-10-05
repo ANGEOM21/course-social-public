@@ -87,10 +87,6 @@
   @livewireStyles()
   @stack('styles')
 
-  @guest
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-  @endguest
-
   @if (isset($titlePage))
     <title>{{ $titlePage }} - {{ $app_name }}</title>
   @endif
@@ -98,12 +94,6 @@
 
 <body>
   {{ $slot }}
-  @guest
-    <div id="g_id_onload" data-auto_select="true"
-      data-client_id="{{ config('services.laravel-google-one-tap.client_id') }}"
-      data-login_uri="{{ config('services.laravel-google-one-tap.redirect') }}" data-use_fedcm_for_prompt="true"
-      data-_token="{{ csrf_token() }}"></div>
-  @endguest
   {{-- Date picker --}}
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   {{-- LeaftJs --}}

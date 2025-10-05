@@ -12,11 +12,13 @@ class ProgressSeeder extends Seeder
         TblProgress::create([
             'student_id' => 1,
             'course_id'  => 1,
+            'module_id' => 1,
         ]);
 
         TblProgress::create([
             'student_id' => 2,
             'course_id'  => 2,
+            'module_id' => 2,
         ]);
     }
 }

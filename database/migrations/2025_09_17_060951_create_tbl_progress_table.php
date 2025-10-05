@@ -11,6 +11,9 @@ return new class extends Migration {
             $table->foreignId('course_id')
                   ->constrained('tbl_courses', 'id_course')
                   ->cascadeOnDelete();
+            $table->foreignId('module_id')
+                  ->constrained('tbl_modules', 'id_module')
+                  ->cascadeOnDelete();
             $table->foreignId('student_id')
                   ->constrained('tbl_students', 'id_student')
                   ->cascadeOnDelete();
