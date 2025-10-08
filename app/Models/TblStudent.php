@@ -59,6 +59,7 @@ class TblStudent extends Authenticatable
 		return $this->password_student;
 	}
 
+
 	public function tbl_courses()
 	{
 		return $this->belongsToMany(TblCourse::class, 'tbl_enrollments', 'student_id', 'course_id');

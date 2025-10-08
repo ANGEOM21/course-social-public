@@ -24,7 +24,7 @@
         </a>
       </div>
     @else
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         @foreach ($enrolledCourses as $course)
           <div wire:key="enrolled-course-{{ $course->id_course }}"
             class="card bg-base-100 shadow-lg border border-base-300 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group overflow-hidden">
@@ -34,7 +34,8 @@
                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               @else
                 <div class="w-full h-full bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center">
-                  <i class="fa-solid fa-book-open text-5xl text-base-content/30"></i></div>
+                  <i class="fa-solid fa-book-open text-5xl text-base-content/30"></i>
+                </div>
               @endif
             </figure>
             <div class="card-body p-6 flex flex-col justify-between">
@@ -58,10 +59,28 @@
                   max="100"></progress>
 
                 <div class="card-actions mt-4">
-                  <a wire:navigate href="#" class="btn btn-primary btn-block group/btn">
-                    <span>Lanjutkan Belajar</span>
-                    <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover/btn:translate-x-1"></i>
-                  </a>
+                  @php
+                    $resumeModuleSlug = $resumeLinks[$course->id_course] ?? null;
+                  @endphp
+                  @if ($resumeModuleSlug)
+                    <a wire:navigate
+                      href="{{ route('student.courses.watch', [
+                          'course' => $course->slug,
+                          'module' => $resumeModuleSlug,
+                      ]) }}"
+                      class="btn btn-primary btn-block group/btn">
+                      @if ($progress < 100)
+                          <span>Lanjutkan Belajar</span>
+                      @else
+                          <span>Resume Belajar</span>
+                      @endif
+                      <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover/btn:translate-x-1"></i>
+                    </a>
+                  @else
+                    <button class="btn btn-primary btn-block" disabled>
+                      Materi Segera Hadir
+                    </button>
+                  @endif
                 </div>
               </div>
             </div>

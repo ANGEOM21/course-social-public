@@ -66,6 +66,10 @@ class MenuItem
                     "text" => "Tentang Kami",
                     "section" => "#about",
                 ],
+                "journey" => [
+                    "text" => "Roadmap",
+                    "section" => "#journey",
+                ],
                 "program" => [
                     "text" => "Program",
                     "section" => "#program",
@@ -80,23 +84,27 @@ class MenuItem
                 "home" => [
                     "text" => "Home",
                     "route_name" => "landing.index",
+                    "navigation" => false
                 ],
                 "dashboard" => [
                     "text" => "Dashboard",
                     "route_name" => "student.dashboard",
-                ],
-                "courses" => [
-                    "text" => "My Courses",
-                    "route_name" => "student.courses",
+                    "navigation" => true,
                 ],
                 "catalog" => [
                     "text" => "Catalog",
                     "route_name" => 'student.catalog',
+                    "navigation" => true
+                ],
+                "courses" => [
+                    "text" => "My Courses",
+                    "route_name" => "student.courses",
+                    "navigation" => true
                 ],
                 "certificate" => [
-                    "text" => "Certificate",
-                    "route_name" => null,
-                    "href" => "#certificate",
+                    "text" => "My Certificate",
+                    "route_name" => 'student.certificates',
+                    "navigation" => true
                 ],
             ],
         ];

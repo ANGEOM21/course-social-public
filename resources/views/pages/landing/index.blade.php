@@ -1,3 +1,31 @@
+<?php
+use Livewire\Volt\Component;
+use Illuminate\Support\Facades\Auth;
+use App\Models\TblCourse;
+use App\Models\TblFeedback;
+use App\Models\TblProgress;
+
+new class extends Component {
+    public function with(): array
+    {
+        $popularCourses = TblCourse::query()
+            ->with(['tbl_category', 'tbl_admin'])
+            ->withCount('tbl_enrollments')
+            ->withAvg('tbl_feedbacks as average_rating', 'rating')
+            ->orderByDesc('average_rating')
+            ->orderByDesc('tbl_enrollments_count')
+            ->take(3)
+            ->get();
+
+        $testimonials = TblFeedback::with('tbl_student')->latest()->take(5)->get();
+
+        return [
+            'popularCourses' => $popularCourses,
+            'testimonials' => $testimonials,
+        ];
+    }
+}; ?>
+
 <div>
   {{-- Hero Section dengan efek paralax --}}
   <section id="hero"
@@ -32,6 +60,45 @@
             Mulai Sebagai Student
           </a>
         @endguest
+      </div>
+    </div>
+  </section>
+
+  {{-- Tentang Kami --}}
+  <section id="about" class="py-20 bg-base-200">
+    <div class="container mx-auto px-4">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        {{-- Kolom Kiri: Gambar --}}
+        <div class="scroll-reveal">
+          <div class="relative w-full max-w-md mx-auto">
+            <div class="absolute -top-4 -left-4 w-full h-full bg-primary rounded-2xl transform -rotate-3"></div>
+            @php
+            // Ganti spasi menjadi - 
+              $logosAbout = Str::slug($app_name)
+            @endphp
+            <img src="{{ asset($logosAbout.'.jpg') }}"
+              alt="Tim {{ $app_name }}" class="relative w-full h-full object-cover rounded-2xl shadow-lg">
+          </div>
+        </div>
+
+        {{-- Kolom Kanan: Teks --}}
+        <div class="scroll-reveal" data-delay="100">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text capitalize">Tentang {{ $app_name }}</h2>
+          <p class="text-lg text-base-content/80 mb-4 leading-relaxed">
+            <strong class="capitalize">{{ $app_name }}</strong> adalah komunitas dan platform edukasi yang lahir dari semangat untuk
+            memberdayakan individu di era digital. Kami percaya bahwa setiap orang memiliki potensi untuk meraih karier
+            impian, dan pendidikan yang tepat adalah kuncinya.
+          </p>
+          <p class="text-base-content/70 mb-6">
+            Misi kami adalah menyediakan jalur pembelajaran yang terstruktur, praktis, dan relevan dengan industri,
+            mulai dari pengembangan web, desain UI/UX, hingga strategi menjadi freelancer sukses. Bersama mentor
+            berpengalaman dan komunitas yang suportif, kami siap menemani setiap langkah perjalanan belajar Anda.
+          </p>
+          <div class="flex items-center gap-4">
+            <a href="#program" class="btn btn-primary">Lihat Kursus</a>
+            <a href="#community" class="btn btn-ghost">Gabung Komunitas</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -151,80 +218,51 @@
     </div>
   </section>
 
-  {{-- Promo Kelas --}}
-  <section id="program" class="py-16 bg-base-100 scroll-section">
+  {{-- Program kelas --}}
+  <section id="program" class="py-16 bg-base-100">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12 scroll-reveal">
         <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">Kursus Populer</h2>
         <p class="text-base-content/70 max-w-2xl mx-auto">
-          Jangan lewatkan kesempatan untuk mengembangkan skillmu dengan
-          harga spesial
+          Kursus pilihan yang paling banyak diminati dan mendapatkan ulasan terbaik dari siswa kami.
         </p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {{-- Card 1 --}}
-        <div
-          class="card bg-base-content text-base-100 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal"
-          data-delay="100">
-          <div class="card-body">
-            <div class="text-center w-full">
-              <span class="badge badge-primary badge-lg mb-2 text-center animate-pulse">
-                DISKON 50%
-              </span>
-            </div>
-            <h3 class="card-title text-2xl justify-center">Laravel Dasar</h3>
-            <p class="opacity-90 text-center">Belajar dari nol sampai mahir.</p>
-            <div class="card-actions justify-center mt-4">
-              <button
-                class="btn btn-primary btn-outline group-hover:btn-primary transition-all transform hover:scale-105">Lihat
-                Detail</button>
-            </div>
-          </div>
-        </div>
-
-        {{-- Card 2 --}}
-        <div
-          class="card bg-base-content text-base-100 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal"
-          data-delay="200">
-          <div class="card-body">
-            <div class="text-center w-full">
-              <span class="badge badge-primary badge-lg mb-2 text-center">
-                TERPOPULER
-              </span>
-            </div>
-            <h3 class="card-title text-2xl justify-center">React JS</h3>
-            <p class="opacity-90 text-center">Bangun aplikasi web modern dengan React.</p>
-            <div class="card-actions justify-center mt-4">
-              <button
-                class="btn btn-primary btn-outline group-hover:btn-primary transition-all transform hover:scale-105">Lihat
-                Detail
-              </button>
+        {{-- Loop melalui kursus populer dari komponen --}}
+        @forelse ($popularCourses as $index => $course)
+          <div
+            class="card bg-base-content text-base-100 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal"
+            data-delay="{{ ($index + 1) * 100 }}">
+            <div class="card-body">
+              <div class="text-center w-full">
+                <span class="badge badge-primary badge-lg mb-2 text-center">
+                  @if ($index == 0)
+                    TERPOPULER
+                  @elseif($index == 1)
+                    BANYAK DIMINATI
+                  @else
+                    REKOMENDASI
+                  @endif
+                </span>
+              </div>
+              <h3 class="card-title text-2xl justify-center h-16">{{ $course->name_course }}</h3>
+              <p class="opacity-90 text-center">oleh {{ $course->tbl_admin->name_admin ?? 'N/A' }}</p>
+              <div class="card-actions justify-center mt-4">
+                <a wire:navigate href="{{ route('student.course.enroll', ['course' => $course->slug]) }}"
+                  class="btn btn-primary btn-outline group-hover:btn-primary transition-all transform hover:scale-105">
+                  Lihat Detail
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-
-        {{-- Card 3 --}}
-        <div
-          class="card bg-base-content text-base-100 shadow-xl overflow-hidden group hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 scroll-reveal"
-          data-delay="300">
-          <div class="card-body">
-            <div class="text-center w-full">
-              <span class="badge badge-primary badge-lg mb-2 text-center">
-                BARU
-              </span>
-            </div>
-            <h3 class="card-title text-2xl justify-center">UI/UX Design</h3>
-            <p class="opacity-90 text-center">Belajar desain pengalaman pengguna profesional.</p>
-            <div class="card-actions justify-center mt-4">
-              <button class="btn btn-outline group-hover:btn-primary transition-all transform hover:scale-105">Lihat
-                Detail</button>
-            </div>
-          </div>
-        </div>
+        @empty
+          <p class="md:col-span-3 text-center text-base-content/60">Kursus populer akan segera ditampilkan.</p>
+        @endforelse
       </div>
     </div>
   </section>
 
+  {{-- Community --}}
   <section id="community" class="py-16 bg-base-100 scroll-section">
     <div class="container mx-auto px-4">
 
@@ -238,7 +276,7 @@
       {{-- Layout Utama Dua Kolom --}}
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-        {{-- Kolom Kiri: Teks & Keuntungan --}}
+        {{-- Teks & Keuntungan --}}
         <div class="scroll-reveal" data-delay="100">
           <h3 class="text-2xl font-bold mb-4">Kenapa Bergabung?</h3>
           <p class="text-base-content/80 mb-6">
@@ -276,7 +314,7 @@
           </ul>
         </div>
 
-        {{-- Kolom Kanan: Widget Discord --}}
+        {{-- Widget Discord --}}
         <div class="scroll-reveal" data-delay="200">
           <div class="card bg-base-200 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
             <div class="card-body">
@@ -292,96 +330,38 @@
     </div>
   </section>
 
-  <section id="testimoni" class="py-16 bg-base-200 scroll-section">
+  {{-- Testimoni / Feedback --}}
+  <section id="testimoni" class="py-16 bg-base-200">
     <div class="">
       <div class="text-center mb-12 scroll-reveal">
         <h2 class="text-3xl md:text-4xl font-bold mb-4 gradient-text">💬 Testimoni Siswa</h2>
         <p class="text-base-content/70 max-w-2xl mx-auto">Apa kata mereka yang sudah bergabung dengan kursus kami</p>
       </div>
 
-      <!-- Wrapper untuk Slick Slider -->
-      <div class="slick marquee py-5 ">
-        <!-- Slide 1 -->
-        <div class="p-2 md:p-4 slick-slide">
-          <div class="card bg-base-100 shadow h-full">
-            <div class="card-body">
-              <div class="rating rating-sm mb-2">
-                @for ($i = 0; $i < 4; $i++)
-                  <div class="mask mask-star-2 bg-orange-400" aria-label="{{ $i + 1 }} star"></div>
-                @endfor
-                <div class="mask mask-star-2 bg-orange-400" aria-label="5 star" aria-current="true"></div>
+      @if ($testimonials->isNotEmpty())
+        <div class="slick marquee py-5">
+          @foreach ($testimonials as $testimonial)
+            <div class="p-2 md:p-4 slick-slide">
+              <div class="card bg-base-100 shadow h-full">
+                <div class="card-body">
+                  <div class="rating rating-sm mb-2">
+                    @for ($i = 1; $i <= 5; $i++)
+                      <input type="radio" name="rating-{{ $testimonial->id_feedback }}"
+                        class="mask mask-star-2 bg-orange-400" {{ $i == $testimonial->rating ? 'checked' : '' }}
+                        disabled />
+                    @endfor
+                  </div>
+                  <p class="mb-4 italic line-clamp-3">"{{ $testimonial->description }}"</p>
+                  <footer class="text-base-content/70 font-semibold">
+                    {{ $testimonial->tbl_student->name_student ?? 'Siswa' }}</footer>
+                </div>
               </div>
-              <p class="mb-4 italic">"Belajarnya mudah dipahami, mentornya keren!"</p>
-              <footer class="text-base-content/70 font-semibold">Andi, Mahasiswa</footer>
             </div>
-          </div>
+          @endforeach
         </div>
-
-        <!-- Slide 2 -->
-        <div class="p-2 md:p-4 slick-slide">
-          <div class="card bg-base-100 shadow h-full">
-            <div class="card-body">
-              <div class="rating rating-sm mb-2">
-                @for ($i = 0; $i < 4; $i++)
-                  <div class="mask mask-star-2 bg-orange-400" aria-label="{{ $i + 1 }} star"></div>
-                @endfor
-                <div class="mask mask-star-2 bg-orange-400" aria-label="5 star" aria-current="true"></div>
-              </div>
-              <p class="mb-4 italic">"Banyak materi praktikal, langsung bisa diterapkan di kerja."</p>
-              <footer class="text-base-content/70 font-semibold">Siti, Web Developer</footer>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 3 -->
-        <div class="p-2 md:p-4 slick-slide">
-          <div class="card bg-base-100 shadow h-full">
-            <div class="card-body">
-              <div class="rating rating-sm mb-2">
-                @for ($i = 0; $i < 4; $i++)
-                  <div class="mask mask-star-2 bg-orange-400" aria-label="{{ $i + 1 }} star"></div>
-                @endfor
-                <div class="mask mask-star-2 bg-orange-400" aria-label="5 star" aria-current="true"></div>
-              </div>
-              <p class="mb-4 italic">"Sertifikatnya membantu banget untuk apply kerja."</p>
-              <footer class="text-base-content/70 font-semibold">Budi, Fresh Graduate</footer>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 4 -->
-        <div class="p-2 md:p-4 slick-slide">
-          <div class="card bg-base-100 shadow h-full">
-            <div class="card-body">
-              <div class="rating rating-sm mb-2">
-                @for ($i = 0; $i < 4; $i++)
-                  <div class="mask mask-star-2 bg-orange-400" aria-label="{{ $i + 1 }} star"></div>
-                @endfor
-                <div class="mask mask-star-2 bg-orange-400" aria-label="5 star" aria-current="true"></div>
-              </div>
-              <p class="mb-4 italic">"Platformnya sangat intuitif dan mudah digunakan."</p>
-              <footer class="text-base-content/70 font-semibold">Dewi, Desainer Grafis</footer>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 5 -->
-        <div class="p-2 md:p-4 slick-slide">
-          <div class="card bg-base-100 shadow h-full">
-            <div class="card-body">
-              <div class="rating rating-sm mb-2">
-                @for ($i = 0; $i < 4; $i++)
-                  <div class="mask mask-star-2 bg-orange-400" aria-label="{{ $i + 1 }} star"></div>
-                @endfor
-                <div class="mask mask-star-2 bg-orange-400" aria-label="5 star" aria-current="true"></div>
-              </div>
-              <p class="mb-4 italic">"Komunitasnya sangat membantu dan aktif."</p>
-              <footer class="text-base-content/70 font-semibold">Eko, System Analyst</footer>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      @else
+        <p class="text-center text-base-content/60">Jadilah yang pertama memberikan testimoni!</p>
+      @endif
     </div>
   </section>
 

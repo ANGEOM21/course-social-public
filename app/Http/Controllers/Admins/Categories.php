@@ -32,31 +32,38 @@ class Categories extends Component
     public $existing_img_category;
     public bool $categoryModal = false;
 
+
+    /**
+     * Reset the pagination to the first page when the search query changes.
+     * 
+     * @return void
+     */
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function render()
-    {
-        $query = TblCategory::query();
-        $query->when($this->search, fn ($q) => $q->where('name_category', 'like', "%{$this->search}%"));
-
-        $categories = $query->orderBy('created_at', 'desc')->paginate($this->perPage);
-
-        return view('pages.admin.categories.index', [
-            'categories' => $categories,
-            'title' => 'Kategori',
-        ]);
-    }
-
+    /**
+     * Buka modal untuk membuat kategori baru.
+     *
+     * Method ini akan mereset form dan mengubah state $categoryModal menjadi true.
+     *
+     * @return void
+     */
     public function create()
     {
         $this->resetForm();
-        // 2. Buka modal dengan mengubah state
         $this->categoryModal = true;
     }
 
+    /**
+     * Method untuk membuat kategori baru.
+     *
+     * Method ini akan membuat kategori baru berdasarkan data yang diisi pada form.
+     * Jika berhasil, maka akan menampilkan pesan sukses dan menutup modal.
+     *
+     * @return void
+     */
     public function store()
     {
         $this->validate();
@@ -72,11 +79,20 @@ class Categories extends Component
         ]);
 
         $this->success('Kategori berhasil dibuat!');
-        // 3. Tutup modal setelah berhasil
         $this->categoryModal = false;
         $this->resetForm();
     }
 
+
+    /**
+     * Summary of edit
+     * @description Buka modal untuk mengedit kategori
+     * @description Memperbarui data kategori
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $id
+     * @return void
+     */
     public function edit($id)
     {
         $cat = TblCategory::findOrFail($id);
@@ -88,6 +104,15 @@ class Categories extends Component
         $this->categoryModal = true;
     }
 
+
+    /**
+     * Method untuk mengedit kategori yang sudah ada.
+     *
+     * Method ini akan memperbarui data kategori yang sudah ada berdasarkan data yang diisi pada form.
+     * Jika berhasil, maka akan menampilkan pesan sukses dan menutup modal.
+     *
+     * @return void
+     */
     public function update()
     {
         $this->validate();
@@ -108,11 +133,18 @@ class Categories extends Component
         ]);
 
         $this->success('Kategori berhasil diperbarui!');
-        // 5. Tutup modal setelah berhasil
         $this->categoryModal = false;
         $this->resetForm();
     }
 
+    /**
+     * Method untuk menyimpan kategori
+     *
+     * Jika $isEdit == true, maka akan memanggil method update()
+     * Jika $isEdit == false, maka akan memanggil method store()
+     *
+     * @return void
+     */
     public function save()
     {
         if ($this->isEdit) {
@@ -122,6 +154,16 @@ class Categories extends Component
         }
     }
 
+    /**
+     * Hapus kategori dengan ID yang diberikan
+     *
+     * Method ini akan menghapus kategori dengan ID yang diberikan
+     * Jika kategori memiliki gambar, maka akan dihapus juga
+     *
+     * @param int $id ID kategori yang akan dihapus
+     *
+     * @return void
+     */
     public function delete($id)
     {
         $cat = TblCategory::findOrFail($id);
@@ -134,9 +176,35 @@ class Categories extends Component
         $this->success('Kategori berhasil dihapus!');
     }
 
+    /**
+     * Summary of resetForm
+     * @description Mereset form
+     * 
+     * @return void
+     */
     public function resetForm()
     {
         $this->reset(['name_category', 'categoryId', 'isEdit', 'img_category', 'existing_img_category']);
         $this->resetErrorBag();
+    }
+
+    /**
+     * Renders the categories index page.
+     *
+     * This method will render the categories index page with pagination and search functionality.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function render()
+    {
+        $query = TblCategory::query();
+        $query->when($this->search, fn($q) => $q->where('name_category', 'like', "%{$this->search}%"));
+
+        $categories = $query->orderBy('created_at', 'desc')->paginate($this->perPage);
+
+        return view('pages.admin.categories.index', [
+            'categories' => $categories,
+            'title' => 'Kategori',
+        ]);
     }
 }

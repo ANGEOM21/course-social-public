@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
  * @property string $video_url
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string $slug
  * 
  * @property TblCourse $tbl_course
  *

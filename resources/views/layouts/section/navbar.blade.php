@@ -13,6 +13,7 @@
   // normalisasi -> semua item punya: text, href, route_name (opsional)
   $items = $rawItems->map(function ($it) use ($isAuth, $forwardSectionToDashboard, $dashboardRouteName) {
       $text = $it['text'] ?? 'Menu';
+      $nav = !empty($it['navigation']); // selalu boolean
 
       // route_name
       if (!empty($it['route_name'])) {
@@ -21,6 +22,7 @@
               'route_name' => $it['route_name'],
               'href' => route($it['route_name']),
               'is_section' => false,
+              'navigation' => $nav, // hanya true kalau diminta
           ];
       }
 
@@ -31,21 +33,25 @@
               'route_name' => null,
               'href' => $it['href'],
               'is_section' => false,
+              'navigation' => $nav,
           ];
       }
 
       // section anchor landing_page
       if (!empty($it['section'])) {
+          // kalau mau forward ke dashboard saat sudah login, aktifkan yang ini:
+          // $href = ($isAuth && $forwardSectionToDashboard)
+          //     ? route($dashboardRouteName) . $it['section']
+          //     : $it['section'];
           $href = $it['section'];
-          if ($isAuth && $forwardSectionToDashboard) {
-              $href = $it['section'];
-          }
+
           return [
               'text' => $text,
               'route_name' => null,
               'href' => $href,
               'is_section' => true,
               'section_raw' => $it['section'],
+              'navigation' => $nav,
           ];
       }
 
@@ -55,6 +61,7 @@
           'route_name' => null,
           'href' => '#',
           'is_section' => false,
+          'navigation' => $nav,
       ];
   });
 
@@ -85,10 +92,11 @@
     <ul class="menu menu-horizontal px-1 font-medium gap-4">
       @foreach ($items as $it)
         <li>
-          <a href="{{ $it['href'] }}" @class([
-              'text-base-content hover:text-primary transition-all duration-300 transform hover:scale-105',
-              'font-bold text-primary' => $isActive($it),
-          ])>
+          <a href="{{ $it['href'] }}" @if (!empty($it['navigation'])) wire:navigate @endif
+            @class([
+                'text-base-content hover:text-primary transition-all duration-300 transform hover:scale-105',
+                'font-bold text-primary' => $isActive($it),
+            ])>
             {{ $it['text'] }}
           </a>
         </li>
@@ -99,8 +107,7 @@
   {{-- Auth Section --}}
   <div class="navbar-end gap-3">
     @if (!$isAuth)
-      <button
-			id="btn-google" class="btn bg-white rounded-full text-black border-[#e5e5e5]">
+      <button id="btn-google" class="btn bg-white rounded-full text-black border-[#e5e5e5]">
         <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512">
           <g>
@@ -131,12 +138,12 @@
 
         <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-44 p-2 mt-2 shadow">
           <li>
-            <a href="{{ route($dashboardRouteName) }}" class="flex items-center gap-2">
+            <a href="{{ route($dashboardRouteName) }}" class="flex items-center gap-2" wire:navigate>
               <i class="fa-solid fa-user"></i> Dashboard
             </a>
           </li>
           <li>
-            <a href="#" class="flex items-center gap-2">
+            <a href="{{ route('student.profile') }}" wire:navigate class="flex items-center gap-2">
               <i class="fa-solid fa-id-badge"></i> Profile
             </a>
           </li>

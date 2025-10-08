@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Students\Catalog;
+use App\Http\Controllers\Students\CertificateController;
 use App\Http\Controllers\Students\Courses;
+use App\Http\Controllers\Students\CoursesEnroll;
+use App\Http\Controllers\Students\CourseWatch;
+use App\Http\Controllers\Students\MyCertificates;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -16,6 +20,11 @@ $routes = [
                 'component' => 'pages.students.dashboard',
             ],
             [
+                'route' => '/my-profile',
+                'name' => 'profile',
+                'component' => 'pages.students.profile',
+            ],
+            [
                 'route' => '/my-courses',
                 'name' => 'courses',
                 'class' => Courses::class,
@@ -24,6 +33,26 @@ $routes = [
                 'route' => '/catalog',
                 'name' => 'catalog',
                 'class' => Catalog::class,
+            ],
+            [
+                'route' => '/courses/{course}/enroll',
+                'name' => 'course.enroll',
+                'class' => CoursesEnroll::class,
+            ],
+            [
+                'route' => '/courses/{course:slug}/watch/{module:slug}',
+                'name' => 'courses.watch',
+                'class' => CourseWatch::class,
+            ],
+            [
+                'route' => '/my-certificates',
+                'name' => 'certificates',
+                'class' => MyCertificates::class,
+            ],
+            [
+                'route' => '/certificate/{course}/download',
+                'name' => 'certificate.download',
+                'class' => CertificateController::class,
             ],
         ],
     ],

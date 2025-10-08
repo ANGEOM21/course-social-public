@@ -14,6 +14,14 @@ class CourseDetailVidio extends Component
     /** @var Collection<int, TblModule> */
     public Collection $allModules;
 
+    /**
+     * Method `mount` akan dipanggil sekali saat komponen dimuat
+     * 
+     * @param TblCourse $slug_course
+     * @param string $slug_module
+     * 
+     * @return void
+     */
     public function mount(TblCourse $slug_course, $slug_module): void
     {
         $this->course = $slug_course->load(['tbl_category', 'tbl_admin']);
@@ -21,35 +29,29 @@ class CourseDetailVidio extends Component
         $this->allModules = $this->course->tbl_modules()->orderBy('created_at', 'asc')->get();
     }
 
+    /**
+     * Mengambil ID video YouTube dari URL video YouTube yang diberikan.
+     * 
+     * Method ini akan mengembalikan ID video YouTube jika URL video YouTube yang diberikan valid.
+     * Jika URL video YouTube yang diberikan tidak valid, maka method ini akan mengembalikan null.
+     * 
+     * @param string|null $url URL video YouTube yang ingin diambil ID-nya.
+     * @return string|null ID video YouTube jika URL video YouTube yang diberikan valid, null jika tidak valid.
+     */
     public function getYoutubeId(?string $url): ?string
     {
-        if (!$url) {
-            return null;
+        if (!$url) return null;
+        if (preg_match('~(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|v/|shorts/))([A-Za-z0-9_-]{6,})~', $url, $m)) {
+            return $m[1];
         }
-
-        $p = parse_url($url);
-        if (!is_array($p)) {
-            return null;
-        }
-
-        if (isset($p['host']) && str_ends_with($p['host'], 'youtu.be')) {
-            return isset($p['path']) ? ltrim($p['path'], '/') : null;
-        }
-
-        if (!empty($p['query'])) {
-            parse_str($p['query'], $q);
-            if (!empty($q['v'])) {
-                return $q['v'];
-            }
-        }
-
-        if (!empty($p['path']) && preg_match('~/(embed|v|shorts)/([A-Za-z0-9_-]{6,})~', $p['path'], $m)) {
-            return $m[2] ?? null;
-        }
-
         return null;
     }
 
+
+    /**
+     * Summary of render
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('pages.admin.course.detail-vidio', [

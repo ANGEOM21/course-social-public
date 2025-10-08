@@ -22,6 +22,12 @@ class Catalog extends Component
     // properti isFiltered
     public bool $isFiltered = false;
 
+    /**
+     * Reset Paginasi saat pencarian berubah
+     *
+     * @param  string  $property
+     * @return void
+     */
     public function updated($property)
     {
         if (in_array($property, ['search', 'category'])) {
@@ -29,12 +35,25 @@ class Catalog extends Component
         }
     }
 
+    /**
+     * Resets searching dan filtering state
+     *
+     * @return void
+     */
     public function resetFilters()
     {
         $this->reset('search', 'category');
         $this->resetPage();
     }
 
+    /**
+     * Render Catalog Index Page
+     * Method ini mengambil data kursus yang belum diikuti oleh siswa yang sedang login,
+     * memungkinkan pencarian dan penyaringan berdasarkan kategori,
+     * serta mengurutkan kursus berdasarkan rating rata-rata dan tanggal pembuatan.
+     * 
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         $categories = TblCategory::orderBy('name_category')->get();
@@ -45,7 +64,6 @@ class Catalog extends Component
 
         $query = TblCourse::query()
             ->with(['tbl_category', 'tbl_admin', 'tbl_modules', 'tbl_feedbacks'])
-            ->whereNotIn('id_course', $enrolledCourseIds)
             ->withAvg('tbl_feedbacks as average_rating', 'rating');
 
         $this->isFiltered = !empty($this->search) || !empty($this->category);
@@ -62,6 +80,7 @@ class Catalog extends Component
         return view('pages.students.catalog.index', [
             'courses' => $courses,
             'categories' => $categories,
+            'enrolledCourseIds' => $enrolledCourseIds,
             'title' => 'Katalog Kursus',
         ]);
     }

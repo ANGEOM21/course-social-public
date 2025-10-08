@@ -92,7 +92,7 @@
                   <div class="flex-1 min-w-0">
                     <p class="font-medium text-sm text-base-content truncate">
                       {{ $course->tbl_admin?->name_admin ?? 'N/A' }}</p>
-                    <p class="text-xs text-base-content/60">Instruktur</p>
+                    <p class="text-xs text-base-content/60">{{ $course->tbl_admin?->role ?? 'N/A' }}</p>
                   </div>
                 </div>
                 <div class="card-actions justify-between items-center mt-6">
@@ -111,10 +111,21 @@
                         {{ round($rating * 2) == $i ? 'checked' : '' }} disabled />
                     @endfor
                   </div>
-                  <a wire:navigate href="#" class="btn btn-primary btn-outline btn-sm group/btn">
-                    <span>Lihat Detail</span>
-                    <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover/btn:translate-x-1"></i>
-                  </a>
+                  @if (in_array($course->id_course, $enrolledCourseIds))
+                    {{-- JIKA SUDAH MENDAFTAR --}}
+                    <a wire:navigate href="{{ route('student.courses') }}" class="btn btn-primary btn-sm group/btn"
+                      title="Anda sudah terdaftar di kursus ini">
+                      <span>Buka Kursus</span>
+                      <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover/btn:translate-x-1"></i>
+                    </a>
+                  @else
+                    {{-- JIKA BELUM MENDAFTAR --}}
+                    <a wire:navigate href="{{ route('student.course.enroll', ['course' => $course->slug]) }}"
+                      class="btn btn-primary btn-outline btn-sm group/btn">
+                      <span>Ambil Kursus</span>
+                      <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover/btn:translate-x-1"></i>
+                    </a>
+                  @endif
                 </div>
               </div>
             </div>

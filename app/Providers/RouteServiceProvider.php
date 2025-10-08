@@ -33,9 +33,7 @@ class RouteServiceProvider extends ServiceProvider
             $webFiles[] = $file;
         }
 
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
 
         $this->routes(function () use ($webFiles) {
             Route::middleware('api')

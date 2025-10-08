@@ -1,6 +1,6 @@
 <?php 
 
-// Login Google dengan role (student | mentor)
+// Login Google dengan role student
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 

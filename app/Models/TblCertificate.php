@@ -35,11 +35,17 @@ class TblCertificate extends Model
 	protected $fillable = [
 		'student_id',
 		'title',
-		'file_path'
+		'file_path',
+		'course_id'
 	];
 
 	public function tbl_student()
 	{
 		return $this->belongsTo(TblStudent::class, 'student_id');
+	}
+
+	public function tbl_course()
+	{
+		return $this->belongsTo(TblCourse::class, 'course_id');
 	}
 }

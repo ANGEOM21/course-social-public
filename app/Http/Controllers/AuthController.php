@@ -13,81 +13,80 @@ use Masmerise\Toaster\Toastable;
 class AuthController extends Controller
 {
     use Toastable;
-    // Redirect ke Google
     public function redirectToGoogle(Request $req)
     {
-        // tandai kalau via popup
         $req->session()->put('oauth_via_popup', $req->boolean('popup'));
 
-        return Socialite::driver('google')
-            ->scopes(['openid', 'profile', 'email'])
-            ->with(['prompt' => 'select_account']) // opsional
-            ->redirect();
+        return Socialite::driver('google')->redirect();
     }
 
-
-    // Callback dari Google
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')
-                ->scopes(['openid', 'profile', 'email'])
-                ->user();
+            /** @var \Laravel\Socialite\Two\User $googleUser */
+            $googleUser = Socialite::driver('google')->user();
 
             $email = $googleUser->getEmail();
             if (!$email) {
-                return redirect()->route('landing.index')->with('error', 'Google tidak mengembalikan email.');
+                // Handle kasus di mana Google tidak mengembalikan email
+                throw new \Exception('Google tidak memberikan akses email.');
             }
 
-            $user = TblStudent::updateOrCreate(
-                ['email_student' => $email],
-                [
-                    'name_student'          => $googleUser->getName() ?: 'Student',
-                    'img_student'           => $googleUser->getAvatar(),
-                    'access_token_student'  => $googleUser->token ?? null,
-                    'refresh_token_student' => property_exists($googleUser, 'refreshToken') ? $googleUser->refreshToken : null,
-                    'token_expires_at'      => property_exists($googleUser, 'expiresIn') && $googleUser->expiresIn
-                        ? now()->addSeconds($googleUser->expiresIn) : null,
-                ]
-            );
+            // Cari pengguna berdasarkan email, atau buat instance baru jika tidak ada
+            $user = TblStudent::firstOrNew(['email_student' => $email]);
 
-            // pake guard student kalau ada
-            Auth::guard()->login($user, true);
+            // Cek apakah pengguna ini baru dibuat (belum ada di database)
+            if (!$user->exists) {
+                // Jika BARU, isi semua data awal
+                $user->name_student = $googleUser->getName() ?: 'Siswa Baru';
+                $user->img_student = $googleUser->getAvatar();
+            }
 
-            // kalau dipanggil via popup -> kirim postMessage & tutup
+            // SELALU update token dan informasi sesi, baik pengguna baru maupun lama
+            $user->access_token_student = $googleUser->token;
+            $user->save();
+
+            // Login-kan pengguna
+            Auth::guard('web')->login($user, true);
+
             if (session()->pull('oauth_via_popup', false)) {
                 $origin = url('/');
                 return response(
                     '<script>
-                   if (window.opener) {
-                     window.opener.postMessage({type:"oauth",provider:"google",ok:true},"' . $origin . '");
-                     window.close();
-                   } else {
-                     location = "' . route('student.dashboard') . '";
-                   }
-                 </script>',
+                    if (window.opener) {
+                        window.opener.postMessage({ type:"oauth", provider:"google", ok:true }, "' . $origin . '");
+                        window.close();
+                    } else {
+                        location = "' . route('student.dashboard') . '";
+                    }
+                    </script>',
                     200,
                     ['Content-Type' => 'text/html']
                 );
             }
 
-            return redirect()->route('student.dashboard')->success( 'Selamat datang, ' . $user->name_student);
-        } catch (\Throwable $e) {
-            Log::error('[Google OAuth] ' . $e->getMessage());
+            return redirect()->intended(route('student.dashboard'))->with('success', 'Selamat datang kembali, ' . $user->name_student);
+        } catch (\Exception $e) {
+            Log::error('[Google OAuth Callback] ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+
+            // Logika response error untuk popup (sudah benar)
             if (session('oauth_via_popup')) {
                 $origin = url('/');
                 return response(
                     '<script>
-                   if (window.opener) {
-                     window.opener.postMessage({type:"oauth",provider:"google",ok:false},"' . $origin . '");
-                     window.close();
-                   } else { location = "' . route('landing.index') . '"; }
-                 </script>',
+                    if (window.opener) {
+                        window.opener.postMessage({ type:"oauth", provider:"google", ok:false }, "' . $origin . '");
+                        window.close();
+                    } else {
+                        location = "' . route('landing.index') . '";
+                    }
+                    </script>',
                     200,
                     ['Content-Type' => 'text/html']
                 );
             }
-            return redirect()->route('landing.index')->error( 'Login gagal, coba lagi.');
+
+            return redirect()->route('landing.index')->with('error', 'Terjadi kesalahan saat login dengan Google. Silakan coba lagi.');
         }
     }
 
@@ -121,6 +120,6 @@ class AuthController extends Controller
         // Log in the user
         Auth::login($user, true);
 
-        return redirect()->route('student.dashboard')->success( 'Selamat datang, ' . $user->name_student);
+        return redirect()->route('student.dashboard')->success('Selamat datang, ' . $user->name_student);
     }
 }

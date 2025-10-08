@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Certificate of Appreciation</title>
+    <style>
+        @page {
+            margin: 0; /* Halaman penuh, tanpa margin dari mPDF */
+        }
+        body {
+            font-family: 'timesnewroman', serif;
+            margin: 0;
+            background-color: #ffffff; /* Latar belakang dasar putih */
+        }
+        /* Bingkai utama yang mengisi seluruh halaman */
+        .certificate-frame {
+            width: 297mm;
+            height: 210mm;
+            box-sizing: border-box; /* PENTING: agar border dan padding termasuk dalam ukuran */
+            border: 15px solid #303841; /* Bingkai luar gelap */
+            padding: 5mm; /* Jarak dari bingkai ke konten */
+            position: relative; /* Ini adalah jangkar untuk footer */
+            background-image: url('{logo}');
+            background-repeat: no-repeat;
+            background-position: center 65%; /* Posisikan watermark sedikit ke bawah */
+            background-size: 130mm;
+            background-image-opacity: 0.08;
+        }
+        /* Header */
+        .header {
+            background-color: #303841;
+            color: #FBBF24;
+            text-align: center;
+            padding: 6mm 0;
+        }
+        .header-title { font-size: 42pt; font-weight: bold; letter-spacing: 1px; }
+        .header-subtitle { font-size: 16pt; font-weight: bold; letter-spacing: 2px; margin-top: 2mm; }
+        
+        /* Konten Tengah */
+        .content {
+            text-align: center;
+            padding-top: 18mm; /* Beri ruang dari header */
+            color: #334155;
+        }
+        .presented-to { font-size: 24pt; font-weight: bold; margin-bottom: 6mm; }
+        .student-name { font-family: 'alexbrush', cursive; font-size: 42pt; color: #0F172A; margin-bottom: 6mm; }
+        .description { width: 80%; margin: 0 auto; font-size: 12pt; line-height: 1.5; }
+        
+        /* [PERBAIKAN UTAMA] Footer dengan position: absolute yang terkontrol */
+        .footer {
+            width: calc(100% - 30mm); /* Lebar penuh dikurangi padding kiri-kanan frame */
+            position: absolute;
+            bottom: 20mm; /* Atur jarak presisi dari bawah */
+            left: 15mm; /* Sesuaikan dengan padding frame */
+            right: 15mm;
+        }
+        .signatures-table { width: 100%; border-collapse: collapse; }
+        .signatures-table td { width: 50%; text-align: center; vertical-align: bottom; }
+        .signature-image { height: 25mm; margin-bottom: 5px; }
+        .signature-line { width: 70%; border-bottom: 1.5px solid #303841; margin: 0 auto 5px auto; }
+        .signature-name { font-weight: bold; font-size: 12pt; color: #303841; }
+        .signature-title { font-size: 10pt; color: #374151; }
+        .meta-code { text-align: center; margin-top: 12mm; font-size: 9pt; color: #6B7280; }
+    </style>
+</head>
+<body>
+    <div class="certificate-frame">
+        <div class="header">
+            <div class="header-title">CERTIFICATE</div>
+            <div class="header-subtitle">OF APPRECIATION</div>
+        </div>
+
+        <div class="content">
+            <div class="presented-to">THIS CERTIFICATE PRESENTED TO</div>
+            <div class="student-name">{nama_student}</div>
+            <div class="description">
+                Diberikan sebagai apresiasi telah menyelesaikan course:
+                <strong>{course}</strong> dengan penuh dedikasi dan komitmen dalam proses pembelajaran.
+                <br />Diselesaikan pada: {tanggal}
+            </div>
+        </div>
+
+        <div class="footer">
+            <table class="signatures-table">
+                <tr>
+                    <td>
+                        <img src="{ttd_siraj}" class="signature-image" alt="TTD">
+                        <div class="signature-line"></div>
+                        <div class="signature-name">Siraj Nurul Bil Haq</div>
+                        <div class="signature-title">Ketua Umum Social Republic</div>
+                    </td>
+                    <td>
+                        <img src="{ttd_angeom}" class="signature-image" alt="TTD">
+                        <div class="signature-line"></div>
+                        <div class="signature-name">Fahmi Idris Anjounghan</div>
+                        <div class="signature-title">Mentor</div>
+                    </td>
+                </tr>
+            </table>
+            <div class="meta-code">{kode_course}</div>
+        </div>
+    </div>
+</body>
+</html>

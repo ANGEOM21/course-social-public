@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
  * @property int $category_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string $slug
  * 
  * @property TblCategory $tbl_category
  * @property TblAdmin $tbl_admin
@@ -45,7 +46,8 @@ class TblCourse extends Model
 		'name_course',
 		'desc_course',
 		'mentor_id',
-		'category_id'
+		'category_id',
+		'slug'
 	];
 
 	protected static function booted()

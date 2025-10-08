@@ -41,6 +41,10 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT'),
+        'scopes' => ['openid', 'profile', 'email'],
+        'access_type'   => 'offline',
+        'prompt'        => 'consent select_account',
+        'include_granted_scopes' => true,
     ],
 
 

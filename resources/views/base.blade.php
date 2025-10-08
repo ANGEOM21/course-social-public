@@ -101,7 +101,6 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>
     document.addEventListener('alpine:init', () => {
-
       Alpine.store('confirmModal', {
         isOpen: false,
         action: null,
@@ -123,6 +122,52 @@
           }
         }
       });
+    });
+
+
+    document.addEventListener("alpine:init", () => {
+      Alpine.data("youtubePlayer", (videoId) => ({
+        player: null,
+        init() {
+          let checkReady = setInterval(() => {
+            if (
+              window.isYouTubeAPIReady &&
+              typeof YT !== "undefined" &&
+              YT.Player
+            ) {
+              clearInterval(checkReady);
+              if (!videoId) {
+                console.error("YouTube Video ID is missing.");
+                return;
+              }
+
+              if (this.player) {
+                this.player.destroy();
+              }
+
+              this.player = new YT.Player("youtube-player", {
+                height: "100%",
+                width: "100%",
+                videoId: videoId,
+                playerVars: {
+                  playsinline: 1,
+                  autoplay: 1,
+                  rel: 0
+                },
+                events: {
+                  onStateChange: this.onPlayerStateChange.bind(this),
+                },
+              });
+            }
+          }, 100);
+        },
+        onPlayerStateChange(event) {
+          if (event.data == YT.PlayerState.ENDED) {
+            console.log("Video finished. Marking as complete.");
+            Livewire.dispatch("markAsComplete");
+          }
+        },
+      }));
     });
   </script>
 

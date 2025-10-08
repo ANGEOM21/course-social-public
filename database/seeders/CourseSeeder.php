@@ -10,7 +10,7 @@ class CourseSeeder extends Seeder
     public function run(): void
     {
         TblCourse::create([
-            'name_course'   => 'Laravel for Beginners',
+            'name_course'   => 'SetUp Termux dan Web Server',
             'desc_course'   => 'Belajar dasar-dasar Laravel.',
             'mentor_id'     => 2, // id_admin mentor
             'category_id'   => 1, // id_category Programming
