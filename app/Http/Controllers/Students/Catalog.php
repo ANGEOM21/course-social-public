@@ -66,9 +66,7 @@ class Catalog extends Component
             ->where('showing', 'Y')
             ->with(['tbl_category', 'tbl_admin', 'tbl_modules', 'tbl_feedbacks'])
             // jika tidak ada module di kursus, maka kursus tersebut tidak akan ditampilkan
-            ->whereHas('tbl_modules', function ($q) {
-                $q->where('showing', 'Y');
-            })
+            ->whereHas('tbl_modules', fn($sub) => $sub->where('showing', 'Y'))
             ->withAvg('tbl_feedbacks as average_rating', 'rating');
 
         $this->isFiltered = !empty($this->search) || !empty($this->category);

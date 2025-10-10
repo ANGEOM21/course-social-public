@@ -58,7 +58,7 @@ new class extends Component {
           'name_admin' => $validated['full_name'],
           'email_admin' => $validated['email'],
           'role' => $validated['role'],
-          'password_admin' => Hash::make($validated['email']),
+          'password_admin' => bcrypt($validated['email']),
           'img_admin' => $filePath,
         ]);
         $this->success('User baru berhasil dibuat!');
@@ -100,7 +100,7 @@ new class extends Component {
             'img_admin' => $filePath,
         ]);
         if ($validated['editingPassword']) {
-            $this->editingUser->update(['password_admin' => Hash::make($validated['editingPassword'])]);
+            $this->editingUser->update(['password_admin' => bcrypt($validated['editingPassword'])]);
         }
         $this->success('Data user berhasil diperbarui!');
         $this->showEditModal = !$this->showEditModal;
@@ -119,7 +119,7 @@ new class extends Component {
         $validated = $this->validate([
             'resetPassword' => ['required', 'string', 'confirmed', Password::min(6)],
         ]);
-        $this->resetingUser->update(['password' => Hash::make($validated['resetPassword'])]);
+        $this->resetingUser->update(['password_admin' => bcrypt($validated['resetPassword'])]);
         $this->success("Password untuk user {$this->resetingUser->email_admin} berhasil direset!");
         $this->showResetPasswordModal = !$this->showResetPasswordModal;
     }
