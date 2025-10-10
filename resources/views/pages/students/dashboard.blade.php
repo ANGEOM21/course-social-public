@@ -34,9 +34,11 @@ new class extends Component {
         $this->resumeLinks = [];
 
         if (!empty($recentlyAccessedCourseIds)) {
+            $safeIds = array_map('intval', $recentlyAccessedCourseIds);
+            $idOrder = implode(',', $safeIds);
             $this->recentCourses = TblCourse::with(['tbl_modules' => fn($q) => $q->orderBy('created_at', 'asc')])
-                ->whereIn('id_course', $recentlyAccessedCourseIds)
-                ->orderByRaw('FIELD(id_course, ?)', [$recentlyAccessedCourseIds])
+                ->whereIn('id_course', $safeIds)
+                ->orderByRaw("FIELD(id_course, $idOrder)")
                 ->get();
 
             $allCompletedModuleIds = TblProgress::where('student_id', $this->student->id_student)->whereIn('course_id', $recentlyAccessedCourseIds)->pluck('module_id')->toArray();
@@ -120,9 +122,9 @@ new class extends Component {
                       ]) }}"
                       class="btn btn-primary">
                       @if ($progress < 100)
-                          <span>Lanjutkan Belajar</span>
+                        <span>Lanjutkan Belajar</span>
                       @else
-                          <span>Resume Belajar</span>
+                        <span>Resume Belajar</span>
                       @endif
                     </a>
                   @else

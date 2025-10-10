@@ -214,7 +214,7 @@
           </li>
           <livewire:components.logout />
           <li class="mt-2">
-            <div class="flex justify-between items-center">
+            <a href="{{ route('student.profile') }}" class="flex justify-between items-center">
               <span>{{ $user->name_student ?? $user->name }}</span>
               <div class="w-10 rounded-full flex">
                 <div class="bg-base-300 h-10 w-10 flex items-center justify-center">
@@ -222,7 +222,7 @@
                     onerror="this.onerror=null;this.src='{{ $fallback }}';" />
                 </div>
               </div>
-            </div>
+            </a>
           </li>
         @endif
       </ul>
