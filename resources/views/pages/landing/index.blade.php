@@ -9,6 +9,7 @@ new class extends Component {
     public function with(): array
     {
         $popularCourses = TblCourse::query()
+            ->whereHas('tbl_modules', fn($sub) => $sub->where('showing', 'Y'))
             ->with(['tbl_category', 'tbl_admin'])
             ->withCount('tbl_enrollments')
             ->withAvg('tbl_feedbacks as average_rating', 'rating')

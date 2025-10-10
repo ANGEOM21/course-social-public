@@ -25,7 +25,7 @@ class Courses extends Component
         $student = Auth::guard('web')->user();
 
         $enrolledCourses = $student->tbl_courses()
-            ->where('showing', 'Y')
+            ->whereHas('tbl_modules', fn($sub) => $sub->where('showing', 'Y'))
             ->with(['tbl_admin', 'tbl_modules', 'tbl_category'])
             ->latest('tbl_enrollments.created_at')
             ->paginate(6);
