@@ -8,8 +8,12 @@
       {{-- Header --}}
       <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
         <div>
-          <h1 class="text-2xl font-bold text-base-content">Manajemen Kategori</h1>
-          <p class="text-sm text-base-content/60 mt-1">Kelola semua kategori produk atau konten Anda di sini.</p>
+          <h1 class="text-2xl font-bold text-base-content">
+            Manajemen Kategori
+          </h1>
+          <p class="text-sm text-base-content/60 mt-1">
+            Kelola semua kategori produk atau konten Anda di sini.
+          </p>
         </div>
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
           <label class="input input-bordered flex items-center gap-3 flex-grow max-w-md shadow-sm">
@@ -39,16 +43,24 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                   d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
-              <h3 class="text-lg font-medium text-base-content mb-2">Belum ada kategori</h3>
-              <p class="text-base-content/60 text-sm mb-4">Mulai dengan membuat kategori pertama Anda.</p>
-              <button wire:click="create" class="btn btn-primary btn-sm">Buat Kategori Pertama</button>
+              <h3 class="text-lg font-medium text-base-content mb-2">
+                Belum ada kategori
+              </h3>
+              <p class="text-base-content/60 text-sm mb-4">
+                Mulai dengan membuat kategori pertama Anda.
+                </p>
+              <button wire:click="create" class="btn btn-primary btn-sm">
+                Buat Kategori Pertama
+                </button>
             </div>
           </div>
         @else
           @if ($search)
             <div class="mb-4 px-1">
-              <p class="text-sm text-base-content/60">Menampilkan hasil untuk "<span
-                  class="font-medium">{{ $search }}</span>" · {{ $categories->total() }} hasil ditemukan</p>
+              <p class="text-sm text-base-content/60">
+                Menampilkan hasil untuk "<span class="font-medium"> {{ $search }}</span>" ·
+                {{ $categories->total() }} hasil ditemukan
+              </p>
             </div>
           @endif
 
@@ -73,7 +85,8 @@
                   </h2>
                   <div class="flex items-center gap-1.5 text-xs text-base-content/50 mt-1"><i
                       class="fa-regular fa-clock"></i>
-                    <span>Dibuat: {{ $category->created_at?->diffForHumans() }}</span>
+                    <span>
+                      Dibuat: {{ $category->created_at?->diffForHumans() }}</span>
                   </div>
                   <div class="card-actions justify-end mt-4 pt-3 border-t border-base-200">
                     <button wire:click="edit({{ $category->id_category }})"

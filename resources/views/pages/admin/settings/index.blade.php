@@ -39,7 +39,7 @@ new class extends Component {
           'tab-active' => $activeTab === 'users',
       ]) wire:click="switchTab('users')">
         <i class="fa fa-users-cog"></i>
-        <span class="hidden md:inline">
+        <span>
           Manajemen User
         </span>
       </a>
@@ -49,7 +49,7 @@ new class extends Component {
         'tab-active' => $activeTab === 'students',
     ]) wire:click="switchTab('students')">
       <i class="fa fa-graduation-cap"></i>
-      <span class="hidden md:inline">
+      <span>
         Para Murid
       </span>
     </a>

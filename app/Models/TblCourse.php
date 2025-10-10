@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
  * @property string|null $desc_course
  * @property int $mentor_id
  * @property int $category_id
+ * @property string $showing
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $slug
@@ -47,7 +48,8 @@ class TblCourse extends Model
 		'desc_course',
 		'mentor_id',
 		'category_id',
-		'slug'
+		'slug',
+		'showing'
 	];
 
 	protected static function booted()

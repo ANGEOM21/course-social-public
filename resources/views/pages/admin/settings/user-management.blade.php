@@ -42,7 +42,7 @@ new class extends Component {
     {
         return [
             'full_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:50', 'unique:tbl_admin,email'],
+            'email' => ['required', 'string', 'max:50', 'unique:tbl_admins,email_admin'],
             'role' => ['required', Rule::in(['admin', 'mentor'])],
             'password' => ['required', 'string', 'confirmed', Password::min(6)],
             'profile_picture' => ['nullable'],
@@ -81,7 +81,7 @@ new class extends Component {
     {
         $validated = $this->validate([
             'editingFullName' => ['required', 'string', 'max:255'],
-            'editingEmail' => ['required', 'string', 'max:50', Rule::unique('users', 'email')->ignore($this->editingUser->id_admin)],
+            'editingEmail' => ['required', 'string', 'max:50', Rule::unique('tbl_admins', 'email_admin')->ignore($this->editingUser->id_admin, 'id_admin')],
             'editingRole' => ['required', Rule::in(['admin', 'mentor'])],
             'editingPassword' => ['nullable', 'string', 'confirmed', Password::min(6)],
             'newProfilePicture' => ['nullable', 'image', 'max:5120'],

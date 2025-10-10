@@ -67,8 +67,14 @@
                     @endif
                   </p>
                   <div class="card-actions justify-end mt-4 pt-3 border-t border-base-200">
+                    <div class="mr-auto tooltip tooltip-right"
+                      data-tip="{{ $course->showing === 'Y' ? 'sembunyikan' : 'tayangkan' }}">
+                      <input type="checkbox" class="toggle toggle-primary"
+                        {{ $course->showing === 'Y' ? 'checked' : '' }}
+                        wire:click="toggleShowing({{ $course->id_course }})" />
+                    </div>
                     <a href="{{ route('admin.courses.detail', [
-                      'slug_course' => $course->slug
+                        'slug_course' => $course->slug,
                     ]) }}"
                       class="btn btn-xs btn-outline btn-ghost">
                       <i class="fa-solid fa-eye"></i>

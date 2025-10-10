@@ -51,10 +51,10 @@
               Reset Filter
             </button>
           @else
-            <i class="fa-solid fa-face-laugh-beam text-8xl text-base-content/10 mb-6"></i>
-            <h3 class="text-2xl font-bold text-base-content mb-3">Luar Biasa!</h3>
+            <i class="fa-solid fa-face-laugh-squint text-8xl text-base-content/10 mb-6"></i>
+            <h3 class="text-2xl font-bold text-base-content mb-3">Maaf Kami belum Menyediakan Kursus</h3>
             <p class="text-base-content/60 max-w-md mx-auto">
-              Anda telah mendaftar di semua kursus yang tersedia saat ini. Nantikan kursus baru dari kami!
+              Kami sedang menyiapkan kursus baru. Silahkan kembali lagi nanti.
             </p>
           @endif
         </div>

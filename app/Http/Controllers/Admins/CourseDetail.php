@@ -32,6 +32,9 @@ class CourseDetail extends Component
     #[Rule('regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/', message: 'URL harus berupa link YouTube yang valid.')]
     public string $video_url = '';
 
+    #[Rule('required|in:Y,N')]
+    public string $showing = 'N';
+
     /**
      * Method `mount` akan dipanggil sekali saat komponen dimuat
      * 
@@ -179,6 +182,27 @@ class CourseDetail extends Component
         $this->loadModules();
     }
 
+
+    /**
+     * Mengubah status menampilkan atau menyembunyikan kursus yang sudah ada dengan ID yang diberikan.
+     *
+     * Method ini akan mengubah status menampilkan atau menyembunyikan kursus yang sesuai dengan ID yang diberikan dan
+     * mengembalikan pesan sukses dengan isi `'title {title_module} berhasil {ditampilkan/disembunyikan}!'`.
+     *
+     * @param int $module_id ID kursus yang ingin diubah statusnya
+     * @return void
+     */
+    public function toggleShowing($module_id)
+    {
+        $module = TblModule::findOrFail($module_id);
+
+        $module->showing = ($module->showing === 'Y') ? 'N' : 'Y';
+        $module->save();
+
+        $status = ($module->showing === 'Y') ? 'ditampilkan' : 'disembunyikan';
+        $this->success("Module '{$module->title}' berhasil {$status}.");
+    }
+
     /**
      * Mereset form dan mengosongkan error bag
      * Method ini akan mengatur nilai-nilai properti di atas menjadi kosong
@@ -186,7 +210,14 @@ class CourseDetail extends Component
      */
     public function resetForm()
     {
-        $this->reset(['title', 'description', 'video_url', 'isEditModule', 'editingModule']);
+        $this->reset([
+            'title',
+            'showing',
+            'description',
+            'video_url',
+            'isEditModule',
+            'editingModule'
+        ]);
         $this->resetErrorBag();
     }
 

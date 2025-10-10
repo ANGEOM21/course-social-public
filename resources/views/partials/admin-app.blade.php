@@ -4,7 +4,7 @@
 		<!-- Navbar -->
 		@include('layouts.topbar')
 		<!-- Page content here -->
-		<main class="container mx-auto p-4">
+		<main class="container mx-auto p-1 md:p-4 ">
 			{{ $slot }}
 		</main>
 	</div>

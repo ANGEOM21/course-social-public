@@ -23,6 +23,8 @@ return new class extends Migration {
                 ->constrained('tbl_categories', 'id_category')
                 ->cascadeOnDelete();
 
+            $table->enum("showing", ['Y', 'N'])->default('N');
+
             $table->timestamps();
         });
     }

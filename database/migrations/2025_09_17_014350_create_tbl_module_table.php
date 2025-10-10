@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->string('video_url');
+            $table->enum("showing", ['Y', 'N'])->default('N');
             $table->timestamps();
         });
     }

@@ -63,7 +63,12 @@ class Catalog extends Component
         $enrolledCourseIds = $student->tbl_courses()->pluck('tbl_courses.id_course')->toArray();
 
         $query = TblCourse::query()
+            ->where('showing', 'Y')
             ->with(['tbl_category', 'tbl_admin', 'tbl_modules', 'tbl_feedbacks'])
+            // jika tidak ada module di kursus, maka kursus tersebut tidak akan ditampilkan
+            ->whereHas('tbl_modules', function ($q) {
+                $q->where('showing', 'Y');
+            })
             ->withAvg('tbl_feedbacks as average_rating', 'rating');
 
         $this->isFiltered = !empty($this->search) || !empty($this->category);

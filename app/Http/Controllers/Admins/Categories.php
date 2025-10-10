@@ -175,6 +175,18 @@ class Categories extends Component
         $cat->delete();
         $this->success('Kategori berhasil dihapus!');
     }
+    
+
+    public function toggleShowing(TblCategory $category)
+    {
+        // Ubah status: jika 'Y' menjadi 'N', jika 'N' menjadi 'Y'
+        $category->showing = ($category->showing === 'Y') ? 'N' : 'Y';
+        $category->save();
+
+        $status = ($category->showing === 'Y') ? 'ditampilkan' : 'disembunyikan';
+        $this->success("Kategori '{$category->name_category}' berhasil {$status}.");
+    }
+
 
     /**
      * Summary of resetForm
@@ -187,6 +199,9 @@ class Categories extends Component
         $this->reset(['name_category', 'categoryId', 'isEdit', 'img_category', 'existing_img_category']);
         $this->resetErrorBag();
     }
+
+
+
 
     /**
      * Renders the categories index page.

@@ -2,10 +2,12 @@
   <title>Detail Kursus - {{ $app_name }}</title>
 
   {{-- Breadcrumbs --}}
-  <div class="breadcrumbs text-sm mb-2">
+  <div class="breadcrumbs text-sm max-w-screen">
     <ul>
-      <li><a wire:navigate href="{{ route('admin.courses.index') }}">Manajemen Kursus</a></li>
-      <li class="truncate">{{ $course->name_course }}</li>
+      <li>
+        <a class="truncate" wire:navigate href="{{ route('admin.courses.index') }}">Manajemen Kursus</a>
+      </li>
+      <li class="truncate elipisis">{{ substr($course->name_course, 0, 30) }}</li>
     </ul>
   </div>
 
@@ -65,10 +67,11 @@
                   </div>
                 </div>
               </div>
-              <figure class="aspect-video bg-base-200 shadow-lg rounded-lg md:w-48 md:h-48 flex-shrink-0 group">
+              <figure class="aspect-video bg-base-200 shadow-lg rounded-lg w-48 h-48 flex-shrink-0 group">
                 @if ($course->tbl_category->img_category)
-                  <img src="{{ Storage::url($course->tbl_category->img_category) }}" alt="{{ $course->tbl_category->name_category }}"
-                    class="w-full h-full group-hover:scale-105 transition-transform duration-300" />
+                  <img src="{{ Storage::url($course->tbl_category->img_category) }}"
+                    alt="{{ $course->tbl_category->name_category }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 object-center" />
                 @else
                   <div class="w-full h-full flex items-center justify-center"><i
                       class="fa-solid fa-image text-4xl text-base-content/20"></i></div>
@@ -103,7 +106,7 @@
                 <div class="collapse-content flex justify-between items-start gap-4">
                   <div class="flex flex-col gap-1 w-full">
                     {{-- Deskripsi Modul --}}
-                    <div class="prose prose-sm max-w-none">
+                    <div class="prose prose-sm">
                       @if ($module->description)
                         {!! $module->description !!}
                       @else
@@ -123,17 +126,23 @@
                       </a>
                     </div>
                   </div>
-                  <div class="flex gap-2" onclick="event.stopPropagation();">
+                  <div class="flex gap-2 flex-col items-center justify-center" onclick="event.stopPropagation();">
                     <div class="join join-horizontal">
-                    <button wire:click="editModule({{ $module->id_module }})" class="btn btn-xs btn-soft btn-warning join-item"
-                      title="Edit">
-                      <i class="fa fa-pencil"></i>
-                    </button>
-                    <button wire:click="deleteModule({{ $module->id_module }})"
-                      wire:confirm="Anda yakin ingin menghapus modul ini?"
-                      class="btn btn-xs btn-soft btn-error join-item" title="Hapus">
-                      <i class="fa fa-trash"></i>
-                    </button>
+                      <button wire:click="editModule({{ $module->id_module }})"
+                        class="btn btn-xs btn-soft btn-warning join-item" title="Edit">
+                        <i class="fa fa-pencil"></i>
+                      </button>
+                      <button wire:click="deleteModule({{ $module->id_module }})"
+                        wire:confirm="Anda yakin ingin menghapus modul ini?"
+                        class="btn btn-xs btn-soft btn-error join-item" title="Hapus">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                    <div class="tooltip tooltip-left mx-auto"
+                      data-tip="{{ $module->showing === 'Y' ? 'sembunyikan' : 'tayangkan' }}">
+                      <input type="checkbox" class="toggle toggle-primary"
+                        {{ $module->showing === 'Y' ? 'checked' : '' }}
+                        wire:click="toggleShowing({{ $module->id_module }})" />
                     </div>
                   </div>
 
@@ -178,7 +187,7 @@
       {{-- DESKRIPSI MODUL (DENGAN TRIX) --}}
       <div class="form-control w-full">
         <label class="label"><span class="label-text font-medium">Deskripsi Modul (Opsional)</span></label>
-                <div wire:ignore x-data="{
+        <div wire:ignore x-data="{
             value: @entangle('description'),
             init() {
                 this.$refs.trix.editor.loadHTML(this.value || '');

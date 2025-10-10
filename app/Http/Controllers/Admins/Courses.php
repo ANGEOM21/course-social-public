@@ -38,6 +38,9 @@ class Courses extends Component
     #[Rule('required|exists:tbl_admins,id_admin')]
     public $mentor_id;
 
+    #[Rule('required|in:Y,N')]
+    public string $showing = 'N';
+
     /**
      * Reset pagination to the first page when the search query changes.
      *
@@ -158,9 +161,36 @@ class Courses extends Component
         $this->success('Kursus berhasil dihapus!');
     }
 
+    /**
+     * Mengubah status menampilkan atau menyembunyikan kursus yang sudah ada dengan ID yang diberikan.
+     *
+     * Method ini akan mengubah status menampilkan atau menyembunyikan kursus yang sesuai dengan ID yang diberikan dan
+     * mengembalikan pesan sukses dengan isi `'Course {nama_kursus} berhasil {ditampilkan/disembunyikan}!'`.
+     *
+     * @param int $course_id ID kursus yang ingin diubah statusnya
+     * @return void
+     */
+    public function toggleShowing($course_id)
+    {
+        $course = TblCourse::findOrFail($course_id);
+
+        $course->showing = ($course->showing === 'Y') ? 'N' : 'Y';
+        $course->save();
+
+        $status = ($course->showing === 'Y') ? 'ditampilkan' : 'disembunyikan';
+        $this->success("Course '{$course->name_course}' berhasil {$status}.");
+    }
+
+    /**
+     * Reset form and error bag
+     *
+     * Method ini akan mereset form dan mengatur nilai error bag menjadi kosong.
+     *
+     * @return void
+     */
     public function resetForm()
     {
-        $this->reset(['name_course', 'desc_course', 'category_id', 'mentor_id', 'isEdit', 'editingCourse']);
+        $this->reset(['name_course', 'showing', 'desc_course', 'category_id', 'mentor_id', 'isEdit', 'editingCourse']);
         $this->resetErrorBag();
     }
 

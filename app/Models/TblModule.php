@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
  * @property string $title
  * @property string|null $description
  * @property string $video_url
+ * @property string $showing
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $slug
@@ -39,7 +40,9 @@ class TblModule extends Model
 		'course_id',
 		'title',
 		'description',
-		'video_url'
+		'video_url',
+		'slug',
+		'showing'
 	];
 
 	protected static function booted()
