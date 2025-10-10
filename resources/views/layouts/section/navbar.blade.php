@@ -39,10 +39,6 @@
 
       // section anchor landing_page
       if (!empty($it['section'])) {
-          // kalau mau forward ke dashboard saat sudah login, aktifkan yang ini:
-          // $href = ($isAuth && $forwardSectionToDashboard)
-          //     ? route($dashboardRouteName) . $it['section']
-          //     : $it['section'];
           $href = $it['section'];
 
           return [
@@ -80,7 +76,7 @@
 
 <nav class="navbar bg-base-100/80 backdrop-blur-sm shadow-lg px-4 sm:px-8 sticky top-0 z-50 transition-all duration-300"
   id="navbar">
-  <div class="navbar-start">
+  <div class="navbar-start w-full">
     <a href="{{ route($landingRouteName) }}" class="flex item-center text-xl p-0 hover:bg-transparent">
       <img src="{{ asset('logo.png') }}" alt="Logo" class="h-8 w-8 mr-2" />
       <span class="font-bold bg-clip-text capitalize truncate elipsis">{{ $appName }}</span>

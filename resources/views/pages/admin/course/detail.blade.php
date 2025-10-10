@@ -7,7 +7,7 @@
       <li>
         <a class="truncate" wire:navigate href="{{ route('admin.courses.index') }}">Manajemen Kursus</a>
       </li>
-      <li class="truncate elipisis">{{ substr($course->name_course, 0, 30) }}</li>
+      <li class="truncate">{{ substr($course->name_course, 0, 30) }} {{ strlen($course->name_course) > 30 ? '...' : '' }}</li>
     </ul>
   </div>
 
@@ -108,7 +108,9 @@
                     {{-- Deskripsi Modul --}}
                     <div class="prose prose-sm">
                       @if ($module->description)
-                        {!! $module->description !!}
+                        <div>
+                          {!! $module->description !!}
+                        </div>
                       @else
                         <p class="italic">Tidak ada deskripsi.</p>
                       @endif
@@ -121,8 +123,9 @@
                       class="btn btn-sm btn-outline btn-primary"><i class="fa-solid fa-play"></i> Putar Video</a>
                     <div class="mt-2 text-xs">
                       <strong>URL Video:</strong>
-                      <a href="{{ $module->video_url }}" target="_blank" class="link link-primary">
-                        {{ $module->video_url }}
+                      <a href="{{ $module->video_url }}" target="_blank"
+                        class="link link-primary truncate text-ellipsis ">
+                        link Youtube
                       </a>
                     </div>
                   </div>
