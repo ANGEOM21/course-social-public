@@ -63,7 +63,7 @@
                   </div>
                   <div class="badge badge-outline">
                     <i class="fa-solid fa-users mr-2"></i>
-                    {{ $course->enrollments_count ?? 0 }} Peserta Terdaftar
+                    {{ $course->tbl_enrollments->count() ?? 0 }} Peserta Terdaftar
                   </div>
                 </div>
               </div>
