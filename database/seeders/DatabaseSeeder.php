@@ -14,14 +14,6 @@ class DatabaseSeeder extends Seeder
         // Jalankan hanya ExampleDataSeeder
         $this->call([
             AdminSeeder::class,
-            StudentSeeder::class,
-            CategorySeeder::class,
-            CourseSeeder::class,
-            ModuleSeeder::class,
-            EnrollmentSeeder::class,
-            FeedbackSeeder::class,
-            CertificateSeeder::class,
-            ProgressSeeder::class,
         ]);
     }
 }
